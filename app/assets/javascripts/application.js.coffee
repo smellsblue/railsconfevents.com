@@ -3,4 +3,5 @@
 #= require bootstrap
 #= require bootstrap-guards
 #= require custom-guards
+#= require twitter/bootstrap/rails/confirm
 #= require turbolinks

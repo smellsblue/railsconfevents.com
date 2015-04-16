@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416055623) do
+ActiveRecord::Schema.define(version: 20150416075543) do
 
   create_table "events", force: :cascade do |t|
     t.integer  "creator_user_id"
@@ -39,17 +39,18 @@ ActiveRecord::Schema.define(version: 20150416055623) do
     t.string   "username"
     t.string   "email"
     t.string   "avatar"
-    t.string   "provider",                        null: false
-    t.string   "uid",                             null: false
+    t.string   "provider",                             null: false
+    t.string   "uid",                                  null: false
     t.string   "remember_token"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",       default: 0, null: false
+    t.integer  "sign_in_count",       default: 0,      null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "role",                default: "user", null: false
   end
 
   add_index "users", ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true

@@ -2,6 +2,14 @@ class Event < ActiveRecord::Base
   belongs_to :creator, foreign_key: "creator_user_id", class_name: "User"
   belongs_to :deleted_by, foreign_key: "deleted_by_user_id", class_name: "User"
 
+  def display_end_time
+    ending_at.strftime "%-I:%M %p"
+  end
+
+  def display_start_time
+    starting_at.strftime "%-I:%M %p"
+  end
+
   def fill(params)
     self.name = params[:name]
     self.coordinator = params[:coordinator]
@@ -17,21 +25,17 @@ class Event < ActiveRecord::Base
     end
   end
 
-  def display_start_time
-    starting_at.strftime "%-I:%M %p"
-  end
-
-  def display_end_time
-    ending_at.strftime "%-I:%M %p"
-  end
-
   class << self
     def display_order
       order :starting_at, :ending_at, :name
     end
 
-    def for_day(day)
-      includes(:creator).listed.not_deleted.on_day(Date.strptime(day, "%m/%d/%Y")).display_order
+    def for_day(active_user, day)
+      if active_user.admin?
+        includes(:creator).not_deleted.on_day(Date.strptime(day, "%m/%d/%Y")).display_order
+      else
+        includes(:creator).listed.not_deleted.on_day(Date.strptime(day, "%m/%d/%Y")).display_order
+      end
     end
 
     def listed

@@ -1,7 +1,7 @@
 <%
 
   full_day = "4/#{day}/2015"
-  events = Event.for_day(full_day).to_a
+  events = Event.for_day(active_user, full_day).to_a
 
 %>
 <% if events.present? || (day >= 21 && day <= 23) %>
@@ -11,7 +11,7 @@
     <em class="lead">None yet...</em>
   <% else %>
     <% events.each do |event| %>
-      <div class="well">
+      <div class="well <%= "unlisted" unless event.listed? %>">
         <p class="lead">
           <%= event.name %>
         </p>
@@ -66,6 +66,26 @@
                 <%= event.creator.display_name %>
               <% end %>
             </em>
+          </p>
+        <% elsif active_user.admin? && event.anonymous_user_ip.present? %>
+          <p>
+            <em>
+              submitted by <%= event.anonymous_user_ip %>
+            </em>
+          </p>
+        <% end %>
+
+        <% if active_user.can_edit? event %>
+          <p>
+            <a class="btn btn-default" href="<%= edit_event_path event %>">edit</a>
+
+            <% if !event.listed? && active_user.can_list?(event) %>
+              <%= link_to "list", list_event_path(event), method: :post, class: "btn btn-danger", data: { confirm: "Are you sure you want to list that?" } %>
+            <% end %>
+
+            <% if active_user.can_delete? event %>
+              <%= link_to "delete", event_path(event), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure you want to delete that?" } %>
+            <% end %>
           </p>
         <% end %>
       </div>

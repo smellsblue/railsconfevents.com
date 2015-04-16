@@ -6,7 +6,9 @@ module ApplicationHelper
   def flash_class_for(type)
     case type
     when :alert
-      :error
+      :danger
+    when :error
+      :danger
     when :notice
       :info
     else

@@ -1,10 +1,6 @@
 module UserInfo
   extend ActiveSupport::Concern
 
-  def anonymous?
-    false
-  end
-
   def display_name
     name || username || email || "Someone"
   end
@@ -15,15 +11,25 @@ module UserInfo
     end
   end
 
+  # Common methods
+  def admin?
+    super_admin? || role == "admin"
+  end
+
+  def anonymous?
+    role == "anonymous"
+  end
+
+  def super_admin?
+    role == "super_admin"
+  end
+
   module Anonymous
     extend ActiveSupport::Concern
+    include UserInfo
 
     def id
       nil
-    end
-
-    def anonymous?
-      true
     end
 
     def display_name
@@ -32,6 +38,10 @@ module UserInfo
 
     def github_path
       nil
+    end
+
+    def role
+      "anonymous"
     end
   end
 end

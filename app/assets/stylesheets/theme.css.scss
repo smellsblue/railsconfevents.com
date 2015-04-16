@@ -3,6 +3,11 @@ body {
     padding-bottom: 20px;
 }
 
+.unlisted.well {
+    background-color: $state-danger-bg;
+    border-color: $state-danger-border;
+}
+
 .navbar {
     margin-bottom: 20px;
 
