@@ -1,9 +1,9 @@
-<%= form_tag "/events", method: :post do %>
+<%= form_tag "/events", method: :post, data: { guarded: true } do %>
   <div class="row">
     <div class="col-sm-8">
       <div class="form-group">
         <label for="name">Name</label> <small class="text-muted">(required)</small>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Event name" />
+        <input type="text" class="form-control" id="name" name="name" placeholder="Event name" data-guard="required" />
       </div>
 
       <div class="row">

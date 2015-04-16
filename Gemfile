@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 
+gem "bootstrap-guardsjs-rails"
 gem "bootstrap-sass", "~> 3.3.4"
 gem "coffee-rails", "~> 4.1.0"
 gem "devise"
