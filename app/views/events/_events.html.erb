@@ -23,7 +23,12 @@
 
         <% if event.url.present? %>
           <p>
-            <a href="<%= event.url %>"><%= event.url %></a>
+            <% if event.listed? %>
+              <a href="<%= event.url %>"><%= event.url %></a>
+            <% else %>
+              <strong>URL:</strong>
+              <%= event.url %>
+            <% end %>
           </p>
         <% end %>
 

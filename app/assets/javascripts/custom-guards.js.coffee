@@ -22,3 +22,9 @@ $.guards.name("railsConf2015").message("Valid dates: 4/18 - 4/26.").using (value
         return false
 
     true
+
+$.guards.name("twitter").message("Invalid Twitter handle.").using (value, element) ->
+    if value == ""
+        return true
+
+    /^[a-zA-Z0-9_]{1,15}$/.test value

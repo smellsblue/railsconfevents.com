@@ -1,3 +1,13 @@
+<% if active_user.anonymous? %>
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="alert alert-warning" role="alert">
+        <strong>WARNING:</strong> You will not be able to edit this event unless you <a href="<%= user_omniauth_authorize_path :github %>">sign in</a> first.
+      </div>
+    </div>
+  </div>
+<% end %>
+
 <%= form_tag "/events", method: :post, data: { guarded: true } do %>
   <div class="row">
     <div class="col-sm-8">
@@ -43,7 +53,7 @@
 
             <div class="input-group">
               <span class="input-group-addon" id="twitter_coordinator_at">@</span>
-              <input type="text" class="form-control" id="coordinator_twitter" name="coordinator_twitter" placeholder="Coordinator" aria-describedby="twitter_coordinator_at" />
+              <input type="text" class="form-control" id="coordinator_twitter" name="coordinator_twitter" placeholder="Coordinator" aria-describedby="twitter_coordinator_at" data-guard="twitter" />
             </div>
           </div>
         </div>

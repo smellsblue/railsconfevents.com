@@ -1,6 +1,8 @@
 class Event < ActiveRecord::Base
   belongs_to :creator, foreign_key: "creator_user_id", class_name: "User"
   belongs_to :deleted_by, foreign_key: "deleted_by_user_id", class_name: "User"
+  validates :name, presence: true
+  validates_format_of :coordinator_twitter, :with => /\A[a-zA-Z0-9_]{1,15}\z/
 
   def display_end_time
     ending_at.strftime "%-I:%M %p"
