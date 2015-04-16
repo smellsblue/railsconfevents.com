@@ -32,7 +32,7 @@ module EventCreator
 
   def edit_event!(params)
     event = Event.find params[:id]
-    raise "You cannot edit that!" unless can_edit? @event
+    raise "You cannot edit that!" unless can_edit? event
     event.fill params
 
     if event.listed?
