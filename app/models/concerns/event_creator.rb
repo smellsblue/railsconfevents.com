@@ -16,8 +16,8 @@ module EventCreator
   def create_event!(params, ip)
     Event.create! do |event|
       event.creator = self
-      event.listed = true
       event.fill params
+      event.listed = admin?
     end
   end
 
@@ -27,6 +27,18 @@ module EventCreator
     event.deleted = true
     event.deleted_by = self
     event.deleted_at = Time.now
+    event.save!
+  end
+
+  def edit_event!(params)
+    event = Event.find params[:id]
+    raise "You cannot edit that!" unless can_edit? @event
+    event.fill params
+
+    if event.listed?
+      event.listed = admin?
+    end
+
     event.save!
   end
 

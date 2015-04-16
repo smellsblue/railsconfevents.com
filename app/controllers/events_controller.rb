@@ -11,6 +11,11 @@ class EventsController < ApplicationController
     redirect_to action: :index
   end
 
+  def edit
+    @event = Event.find params[:id]
+    raise "You cannot edit that!" unless active_user.can_edit? @event
+  end
+
   def index
   end
 
@@ -21,5 +26,11 @@ class EventsController < ApplicationController
   end
 
   def new
+  end
+
+  def update
+    active_user.edit_event! params
+    flash[:info] = "Thanks for editing your event!"
+    redirect_to action: :index
   end
 end

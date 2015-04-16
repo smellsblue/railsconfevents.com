@@ -1,0 +1,13 @@
+<% if @event.listed? && !active_user.admin? %>
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="alert alert-warning" role="alert">
+        <strong>WARNING:</strong> Your event will be de-listed until it is approved again.
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<%= form_tag event_path(@event), method: :put, data: { guarded: true } do %>
+  <%= partial "form", event: @event, submit_label: "Update" %>
+<% end %>
