@@ -11,7 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416042640) do
+ActiveRecord::Schema.define(version: 20150416055623) do
+
+  create_table "events", force: :cascade do |t|
+    t.integer  "creator_user_id"
+    t.string   "anonymous_user_ip"
+    t.string   "name",                                null: false
+    t.string   "coordinator"
+    t.string   "coordinator_twitter"
+    t.string   "url"
+    t.string   "location"
+    t.text     "description"
+    t.datetime "starting_at",                         null: false
+    t.datetime "ending_at",                           null: false
+    t.boolean  "listed",                              null: false
+    t.boolean  "deleted",             default: false, null: false
+    t.datetime "deleted_at"
+    t.integer  "deleted_by_user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "events", ["starting_at"], name: "index_events_on_starting_at"
 
   create_table "users", force: :cascade do |t|
     t.string   "name"

@@ -1,15 +1,5 @@
 class Anonymous
-  def id
-    nil
-  end
-
-  def anonymous?
-    true
-  end
-
-  def display_name
-    "anonymous"
-  end
+  include IsUser::Anonymous
 
   class << self
     def user

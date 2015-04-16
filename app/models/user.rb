@@ -1,13 +1,6 @@
 class User < ActiveRecord::Base
   devise :omniauthable, :rememberable, :trackable
-
-  def anonymous?
-    false
-  end
-
-  def display_name
-    name || username || email || "Someone"
-  end
+  include IsUser
 
   class << self
     def from_auth(auth)

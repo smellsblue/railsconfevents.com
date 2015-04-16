@@ -7,6 +7,29 @@
       </div>
 
       <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="date">Date</label> <small class="text-muted">(required)</small>
+            <input type="text" class="form-control" id="date" name="date" placeholder="Ex: 4/22/2015" data-guard="required dateUS railsConf2015" />
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="start_time">Start Time</label> <small class="text-muted">(required)</small>
+            <input type="text" class="form-control" id="start_time" name="start_time" placeholder="Ex: 7:00 pm" data-guard="required timeUS" />
+          </div>
+        </div>
+
+        <div class="col-sm-4">
+          <div class="form-group">
+            <label for="end_time">End Time</label> <small class="text-muted">(required)</small>
+            <input type="text" class="form-control" id="end_time" name="end_time" placeholder="Ex: 7:30 pm" data-guard="required timeUS" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
         <div class="col-sm-6">
           <div class="form-group">
             <label for="coordinator">Coordinator</label>
