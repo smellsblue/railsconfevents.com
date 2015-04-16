@@ -17,6 +17,11 @@ body {
     border-color: $state-danger-border;
 }
 
+.pending.well {
+    background-color: $state-warning-bg;
+    border-color: $state-warning-border;
+}
+
 .navbar {
     margin-bottom: 20px;
 

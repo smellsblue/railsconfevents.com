@@ -54,12 +54,20 @@ class Event < ActiveRecord::Base
       if active_user.admin?
         includes(:creator).not_deleted.on_day(Date.strptime(day, "%m/%d/%Y")).display_order
       else
-        includes(:creator).listed.not_deleted.on_day(Date.strptime(day, "%m/%d/%Y")).display_order
+        includes(:creator).listed_or_by(active_user).not_deleted.on_day(Date.strptime(day, "%m/%d/%Y")).display_order
       end
     end
 
     def listed
       where listed: true
+    end
+
+    def listed_or_by(user)
+      if user.anonymous?
+        listed
+      else
+        where "(listed = ? OR creator_user_id = ?)", true, user.id
+      end
     end
 
     def not_deleted

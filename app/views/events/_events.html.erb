@@ -11,8 +11,12 @@
     <em class="lead">None yet...</em>
   <% else %>
     <% events.each do |event| %>
-      <div class="well <%= "unlisted" unless event.listed? %>">
+      <div class="well <%= additional_event_well_classes event %>">
         <p class="lead">
+          <% unless event.listed? %>
+            <span class="label label-primary" data-toggle="tooltip" data-placement="top" title="This event is pending spam check before it is visible to everyone">unlisted</span>
+          <% end %>
+
           <%= event.name %>
         </p>
 
