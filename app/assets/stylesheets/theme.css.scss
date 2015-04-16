@@ -5,4 +5,10 @@ body {
 
 .navbar {
     margin-bottom: 20px;
+
+    @media(max-width: $screen-xs-max) {
+        .navbar-text {
+            padding: 10px 15px;
+        }
+    }
 }
