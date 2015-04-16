@@ -15,6 +15,10 @@ gem "turbolinks"
 gem "twitter-bootstrap-rails-confirm"
 gem "uglifier", ">= 1.3.0"
 
+group :production do
+  gem "pg"
+end
+
 group :development, :test do
   gem "byebug"
   gem "spring"
