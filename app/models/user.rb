@@ -5,6 +5,10 @@ class User < ActiveRecord::Base
     false
   end
 
+  def display_name
+    name || username || email || "Someone"
+  end
+
   class << self
     def from_auth(auth)
       where(provider: auth.provider, uid: auth.uid).first_or_create do |user|

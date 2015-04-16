@@ -7,6 +7,10 @@ class Anonymous
     true
   end
 
+  def display_name
+    "anonymous"
+  end
+
   class << self
     def user
       new

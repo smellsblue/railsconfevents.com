@@ -30,7 +30,15 @@
               <% if active_user.anonymous? %>
                 <li><a href="<%= user_omniauth_authorize_path :github %>"><em>Sign in / Register</em></a></li>
               <% else %>
-                <li><p class="navbar-text"><img src="<%= active_user.avatar %>" height="16px" /> <%= active_user.name %></p></li>
+                <li>
+                  <p class="navbar-text">
+                    <% if active_user.avatar.present? %>
+                      <img src="<%= active_user.avatar %>" height="16px" />
+                    <% end %>
+
+                    <%= active_user.display_name %>
+                  </p>
+                </li>
                 <li><%= link_to "Logout", users_sign_out_path, method: :delete %></li>
               <% end %>
             </ul>
