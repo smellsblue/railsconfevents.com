@@ -5,12 +5,12 @@ repository of the official and unofficial events happening during (and
 surrounding) RailsConf 2015. If it goes well, then it could be a site that
 sticks around for every RailsConf to list past and present RailsConf events.
 
-# Ideas?
+## Ideas?
 
 Go ahead and open an issue on GitHub! If you want to dive in to the code, go
 ahead and submit a pull request. If you like, you can message me about it.
 
-# Got an event?
+## Got an event?
 
 Visit https://railsconfevents.com/ and submit your event! If you create an
 account first, you will be able to see the event before it gets approved.
