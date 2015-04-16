@@ -9,6 +9,12 @@ module UserInfo
     name || username || email || "Someone"
   end
 
+  def github_path
+    if username
+      "https://github.com/#{username}"
+    end
+  end
+
   module Anonymous
     extend ActiveSupport::Concern
 
@@ -22,6 +28,10 @@ module UserInfo
 
     def display_name
       "anonymous"
+    end
+
+    def github_path
+      nil
     end
   end
 end

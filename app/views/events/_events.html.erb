@@ -1,0 +1,74 @@
+<%
+
+  full_day = "4/#{day}/2015"
+  events = Event.for_day(full_day).to_a
+
+%>
+<% if events.present? || (day >= 21 && day <= 23) %>
+  <h2><%= event_day_label full_day %></h2>
+
+  <% if events.empty? %>
+    <em class="lead">None yet...</em>
+  <% else %>
+    <% events.each do |event| %>
+      <div class="well">
+        <p class="lead">
+          <%= event.name %>
+        </p>
+
+        <p>
+          <strong>Time:</strong>
+          <%= event.display_start_time %> - <%= event.display_end_time %>
+        </p>
+
+        <% if event.url.present? %>
+          <p>
+            <a href="<%= event.url %>"><%= event.url %></a>
+          </p>
+        <% end %>
+
+        <% if event.coordinator.present? %>
+          <p>
+            <strong>Coordinator:</strong>
+            <% if event.coordinator_twitter.present? %>
+              <a href="https://twitter.com/<%= event.coordinator_twitter %>"><%= event.coordinator %></a>
+            <% else %>
+              <%= event.coordinator %>
+            <% end %>
+          </p>
+        <% end %>
+
+        <% if event.location.present? %>
+          <p>
+            <strong>Location:</strong>
+            <%= event.location %>
+          </p>
+        <% end %>
+
+        <% if event.description.present? %>
+          <p>
+            <em><%= event.description %></em>
+          </p>
+        <% end %>
+
+        <% if event.creator.present? %>
+          <p>
+            <em>
+              submitted by
+
+              <% if event.creator.avatar.present? %>
+                <img src="<%= event.creator.avatar %>" height="16px" />
+              <% end %>
+
+              <% if event.creator.github_path.present? %>
+                <a href="<%= event.creator.github_path %>"><%= event.creator.display_name %></a>
+              <% else %>
+                <%= event.creator.display_name %>
+              <% end %>
+            </em>
+          </p>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

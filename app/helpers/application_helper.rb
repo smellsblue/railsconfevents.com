@@ -13,4 +13,13 @@ module ApplicationHelper
       type
     end
   end
+
+  def partial(name, locals = {}, &block)
+    if block
+      raise "Cannot have a 'body' local when a block is given!" if locals.include?(:body)
+      locals[:body] = capture &block
+    end
+
+    render partial: name, locals: locals
+  end
 end

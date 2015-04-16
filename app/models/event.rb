@@ -9,9 +9,41 @@ class Event < ActiveRecord::Base
     self.url = params[:url]
     self.location = params[:location]
     self.description = params[:description]
+    self.starting_at = DateTime.strptime "#{params[:date]} #{params[:start_time]}", "%m/%d/%Y %I:%M %p"
+    self.ending_at = DateTime.strptime "#{params[:date]} #{params[:end_time]}", "%m/%d/%Y %I:%M %p"
 
-    # TODO
-    self.starting_at = params[:starting_at]
-    self.ending_at = params[:ending_at]
+    if ending_at < starting_at
+      self.ending_at += 1.day
+    end
+  end
+
+  def display_start_time
+    starting_at.strftime "%-I:%M %p"
+  end
+
+  def display_end_time
+    ending_at.strftime "%-I:%M %p"
+  end
+
+  class << self
+    def display_order
+      order :starting_at, :ending_at, :name
+    end
+
+    def for_day(day)
+      includes(:creator).listed.not_deleted.on_day(Date.strptime(day, "%m/%d/%Y")).display_order
+    end
+
+    def listed
+      where listed: true
+    end
+
+    def not_deleted
+      where deleted: false
+    end
+
+    def on_day(day)
+      where starting_at: (day.beginning_of_day..day.end_of_day)
+    end
   end
 end

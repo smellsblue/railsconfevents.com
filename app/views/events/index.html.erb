@@ -3,3 +3,11 @@
     <a class="btn btn-default btn-block" href="/events/new">Add Event</a>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-sm-10 col-md-8">
+    <% 18.upto 26 do |day| %>
+      <%= partial "events", day: day %>
+    <% end %>
+  </div>
+</div>
