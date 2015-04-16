@@ -12,4 +12,10 @@ Rails.application.routes.draw do
       post :list
     end
   end
+
+  resources :users, only: [:index] do
+    member do
+      post "promote/:role", action: :promote, as: :promote
+    end
+  end
 end

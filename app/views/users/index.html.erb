@@ -1,0 +1,34 @@
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Name</th>
+      <th>GitHub</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% User.for_admin.each do |user| %>
+      <tr>
+        <td><%= user_avatar user %></td>
+        <td><%= user.name %></td>
+        <td><%= user_github_link user, label: user.username %></td>
+        <td><%= user.email %></td>
+        <td><%= user.role %></td>
+
+        <td>
+          <% unless user.admin? %>
+            <%= link_to "promote to admin", promote_user_path(user, "admin"), method: :post, class: "btn btn-danger", data: { confirm: "Are you sure you want to promote them?" } %>
+          <% end %>
+
+          <% unless user.super_admin? %>
+            <%= link_to "promote to super_admin", promote_user_path(user, "super_admin"), method: :post, class: "btn btn-danger", data: { confirm: "Are you sure you want to promote them?" } %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

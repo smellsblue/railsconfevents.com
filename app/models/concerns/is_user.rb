@@ -1,11 +1,13 @@
 module IsUser
   extend ActiveSupport::Concern
-  include UserInfo
   include EventCreator
+  include UserInfo
+  include UserManipulator
 
   module Anonymous
     extend ActiveSupport::Concern
-    include UserInfo::Anonymous
     include EventCreator::Anonymous
+    include UserInfo::Anonymous
+    include UserManipulator::Anonymous
   end
 end

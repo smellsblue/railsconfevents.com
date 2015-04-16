@@ -64,16 +64,8 @@
           <p>
             <em>
               submitted by
-
-              <% if event.creator.avatar.present? %>
-                <img src="<%= event.creator.avatar %>" height="16px" />
-              <% end %>
-
-              <% if event.creator.github_path.present? %>
-                <a href="<%= event.creator.github_path %>"><%= event.creator.display_name %></a>
-              <% else %>
-                <%= event.creator.display_name %>
-              <% end %>
+              <%= user_avatar event.creator %>
+              <%= user_github_link event.creator %>
             </em>
           </p>
         <% elsif active_user.admin? && event.anonymous_user_ip.present? %>

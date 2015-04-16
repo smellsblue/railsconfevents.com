@@ -3,6 +3,10 @@ class User < ActiveRecord::Base
   include IsUser
 
   class << self
+    def for_admin
+      order(:name, :username, :email)
+    end
+
     def from_auth(auth)
       where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
         user.provider = auth.provider

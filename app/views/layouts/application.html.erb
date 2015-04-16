@@ -26,19 +26,23 @@
           </div>
 
           <div id="navbar" class="navbar-collapse collapse">
+            <% if active_user.super_admin? %>
+              <ul class="nav navbar-nav">
+                <li <%= %{class="active"}.html_safe if params[:controller] == "users" %>><a href="/users">Users</a></li>
+              </ul>
+            <% end %>
+
             <ul class="nav navbar-nav navbar-right">
               <% if active_user.anonymous? %>
                 <li><a href="<%= user_omniauth_authorize_path :github %>"><em>Sign in / Register</em></a></li>
               <% else %>
                 <li>
                   <p class="navbar-text">
-                    <% if active_user.avatar.present? %>
-                      <img src="<%= active_user.avatar %>" height="16px" />
-                    <% end %>
-
+                    <%= user_avatar active_user %>
                     <%= active_user.display_name %>
                   </p>
                 </li>
+
                 <li><%= link_to "Logout", users_sign_out_path, method: :delete %></li>
               <% end %>
             </ul>
