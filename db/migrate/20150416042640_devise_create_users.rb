@@ -15,7 +15,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.string   :current_sign_in_ip
       t.string   :last_sign_in_ip
 
-      t.timestamps
+      t.timestamps null: true
     end
 
     add_index :users, [:provider, :uid], unique: true

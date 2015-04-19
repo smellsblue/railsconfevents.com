@@ -1,4 +1,5 @@
 robots_unite:
+  conference: railsconf2015
   name: Robots Unite
   location: The abandoned shed off New First Street
   listed: true
@@ -7,6 +8,7 @@ robots_unite:
   ending_at: 2015-04-22 19:00:00
 
 science_o_rama:
+  conference: railsconf2015
   name: Science-o-rama
   creator: farnsworth
   location: Planet Express, NNY, NY
@@ -15,6 +17,7 @@ science_o_rama:
   ending_at: 2015-04-21 17:00:00
 
 tv_night:
+  conference: railsconf2015
   name: Night of TV
   creator: fry
   location: Fry's apartment

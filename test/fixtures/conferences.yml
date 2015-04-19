@@ -1,0 +1,15 @@
+railsconf2014:
+  creator: farnsworth
+  starting_at: 2014-04-22
+  ending_at: 2014-04-25
+  allow_starting_at: 2014-04-19
+  allow_ending_at: 2014-04-27
+  year: 2014
+
+railsconf2015:
+  creator: farnsworth
+  starting_at: 2015-04-21
+  ending_at: 2015-04-23
+  allow_starting_at: 2015-04-18
+  allow_ending_at: 2015-04-26
+  year: 2015

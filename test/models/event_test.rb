@@ -34,6 +34,22 @@ class EventTest < ActiveSupport::TestCase
     assert_equal "127.0.0.1", event.anonymous_user_ip, "Anonymous ip is stored when creating an event"
   end
 
+  def test_create_with_invalid_date
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).create_event!({ name: "An event",
+                                  date: "4/17/2015",
+                                  start_time: "7:00 pm",
+                                  end_time: "8:00 pm" }, "127.0.0.1")
+    end
+
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).create_event!({ name: "An event",
+                                  date: "4/27/2015",
+                                  start_time: "7:00 pm",
+                                  end_time: "8:00 pm" }, "127.0.0.1")
+    end
+  end
+
   def test_delete_event_as_admin_user
     event = events :tv_night
     users(:farnsworth).destroy_event! id: event.id.to_s
@@ -103,6 +119,18 @@ class EventTest < ActiveSupport::TestCase
     event.reload
     assert event.listed?, "The unedited event is unchanged"
     assert_not_equal "Robots, woohoo!", event.description
+  end
+
+  def test_edit_event_with_invalid_date
+    event = events :tv_night
+
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).edit_event! edit_event_params(event, date: "4/17/2015")
+    end
+
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).edit_event! edit_event_params(event, date: "4/27/2015")
+    end
   end
 
   private

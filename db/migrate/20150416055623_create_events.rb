@@ -16,7 +16,7 @@ class CreateEvents < ActiveRecord::Migration
       t.timestamp :deleted_at
       t.integer :deleted_by_user_id
 
-      t.timestamps
+      t.timestamps null: true
     end
 
     add_foreign_key :events, :users, column: :creator_user_id

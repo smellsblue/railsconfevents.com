@@ -1,6 +1,6 @@
 $ = jQuery
 
-$.guards.name("railsConf2015").message("Valid dates: 4/18 - 4/26.").using (value, element) ->
+$.guards.name("confDates").using (value, element) ->
     value = $.trim value
 
     # Let dateUS handle it if this fails
@@ -11,14 +11,13 @@ $.guards.name("railsConf2015").message("Valid dates: 4/18 - 4/26.").using (value
     month = parseInt match[1], 10
     day = parseInt match[2], 10
     year = parseInt match[3], 10
+    value = new Date("#{year}-#{month}-#{day} 0:00:00")
+    $element = $ element
 
-    unless month == 4
+    if value < new Date("#{$element.data("valid-starting-at")} 0:00:00")
         return false
 
-    unless day >= 18 && day <= 26
-        return false
-
-    unless year == 2015
+    if value > new Date("#{$element.data("valid-ending-at")} 0:00:00")
         return false
 
     true

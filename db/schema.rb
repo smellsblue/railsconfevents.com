@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416075543) do
+ActiveRecord::Schema.define(version: 20150419203639) do
+
+  create_table "conferences", force: :cascade do |t|
+    t.integer  "creator_user_id",   null: false
+    t.date     "starting_at",       null: false
+    t.date     "ending_at",         null: false
+    t.date     "allow_starting_at", null: false
+    t.date     "allow_ending_at",   null: false
+    t.integer  "year",              null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "conferences", ["year"], name: "index_conferences_on_year", unique: true
 
   create_table "events", force: :cascade do |t|
     t.integer  "creator_user_id"
@@ -28,8 +41,9 @@ ActiveRecord::Schema.define(version: 20150416075543) do
     t.boolean  "deleted",             default: false, null: false
     t.datetime "deleted_at"
     t.integer  "deleted_by_user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.integer  "conference_id",                       null: false
   end
 
   add_index "events", ["starting_at"], name: "index_events_on_starting_at"
@@ -48,8 +62,8 @@ ActiveRecord::Schema.define(version: 20150416075543) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
     t.string   "role",                default: "user", null: false
   end
 

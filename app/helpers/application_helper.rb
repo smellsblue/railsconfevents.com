@@ -3,6 +3,10 @@ module ApplicationHelper
     current_user || Anonymous.user
   end
 
+  def current_conference
+    @current_conference ||= Conference.current
+  end
+
   def flash_class_for(type)
     case type
     when :alert

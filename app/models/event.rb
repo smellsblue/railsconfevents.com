@@ -1,8 +1,10 @@
 class Event < ActiveRecord::Base
+  belongs_to :conference
   belongs_to :creator, foreign_key: "creator_user_id", class_name: "User"
   belongs_to :deleted_by, foreign_key: "deleted_by_user_id", class_name: "User"
   validates :name, presence: true
   validates_format_of :coordinator_twitter, :with => /\A[a-zA-Z0-9_]{0,15}\z/
+  validate :date_within_conference_allowed_dates
 
   def display_end_time
     ending_at.strftime "%-I:%M %p"
@@ -42,6 +44,18 @@ class Event < ActiveRecord::Base
 
     if ending_at < starting_at
       self.ending_at += 1.day
+    end
+  end
+
+  private
+
+  def date_within_conference_allowed_dates
+    if starting_at.to_date < conference.allow_starting_at
+      errors.add(:starting_at, "can't be before conference allowed start")
+    end
+
+    if starting_at.to_date > conference.allow_ending_at
+      errors.add(:starting_at, "can't be after conference allowed end")
     end
   end
 
