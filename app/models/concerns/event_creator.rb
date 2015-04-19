@@ -17,12 +17,13 @@ module EventCreator
     Event.create! do |event|
       event.creator = self
       event.fill params
-      event.listed = admin?
+      event.listed = true
     end
   end
 
   def destroy_event!(params)
     event = Event.find params[:id]
+    raise PermissionError.new unless can_delete? event
     return if event.deleted?
     event.deleted = true
     event.deleted_by = self
@@ -32,13 +33,8 @@ module EventCreator
 
   def edit_event!(params)
     event = Event.find params[:id]
-    raise "You cannot edit that!" unless can_edit? event
+    raise PermissionError.new unless can_edit? event
     event.fill params
-
-    if event.listed?
-      event.listed = admin?
-    end
-
     event.save!
   end
 
@@ -73,11 +69,15 @@ module EventCreator
     end
 
     def destroy_event!(params)
-      raise "You don't have permission!"
+      raise PermissionError.new
+    end
+
+    def edit_event!(params)
+      raise PermissionError.new
     end
 
     def list_event!(params)
-      raise "You don't have permission!"
+      raise PermissionError.new
     end
   end
 end

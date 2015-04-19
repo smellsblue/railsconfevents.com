@@ -1,0 +1,23 @@
+farnsworth:
+  name: Hubert Farnsworth
+  username: farnsworth
+  email: farnsworth@futurama.com
+  provider: github
+  uid: farnsworthuid
+  role: admin
+
+fry:
+  name: Philip J Fry
+  username: fry
+  email: fry@futurama.com
+  provider: github
+  uid: fryuid
+  role: user
+
+leela:
+  name: Turanga Leela
+  username: leela
+  email: leela@futurama.com
+  provider: github
+  uid: leelauid
+  role: user
