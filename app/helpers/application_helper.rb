@@ -16,6 +16,10 @@ module ApplicationHelper
     end
   end
 
+  def me_active?
+    params[:controller] == "users" && params[:action] == "me"
+  end
+
   def partial(name, locals = {}, &block)
     if block
       raise "Cannot have a 'body' local when a block is given!" if locals.include?(:body)
@@ -25,9 +29,9 @@ module ApplicationHelper
     render partial: name, locals: locals
   end
 
-  def user_avatar(user)
+  def user_avatar(user, options = { height: "16" })
     if user.avatar.present?
-      image_tag user.avatar, height: "16"
+      image_tag user.avatar, options
     end
   end
 
@@ -43,5 +47,9 @@ module ApplicationHelper
     else
       label
     end
+  end
+
+  def users_active?
+    params[:controller] == "users" && params[:action] != "me"
   end
 end

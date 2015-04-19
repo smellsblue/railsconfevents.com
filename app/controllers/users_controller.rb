@@ -1,7 +1,10 @@
 class UsersController < ApplicationController
-  before_filter :verify_access
+  before_filter :verify_access, except: [:me, :update_me]
 
   def index
+  end
+
+  def me
   end
 
   def promote
@@ -10,9 +13,15 @@ class UsersController < ApplicationController
     redirect_to action: :index
   end
 
+  def update_me
+    active_user.update_me! params
+    flash[:info] = "Your user information has been updated."
+    redirect_to action: :me
+  end
+
   private
 
   def verify_access
-    raise "You do not have permission to be here!" unless active_user.super_admin?
+    raise PermissionError.new unless active_user.super_admin?
   end
 end

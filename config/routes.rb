@@ -14,6 +14,11 @@ Rails.application.routes.draw do
   end
 
   resources :users, only: [:index] do
+    collection do
+      get :me
+      put :me, action: :update_me
+    end
+
     member do
       post "promote/:role", action: :promote, as: :promote
     end

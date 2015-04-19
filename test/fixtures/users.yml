@@ -4,7 +4,7 @@ farnsworth:
   email: farnsworth@futurama.com
   provider: github
   uid: farnsworthuid
-  role: admin
+  role: super_admin
 
 fry:
   name: Philip J Fry
@@ -13,6 +13,14 @@ fry:
   provider: github
   uid: fryuid
   role: user
+
+hermes:
+  name: Hermes Conrad
+  username: hermes
+  email: hermes@futurama.com
+  provider: github
+  uid: hermesuid
+  role: incognito_admin
 
 leela:
   name: Turanga Leela
