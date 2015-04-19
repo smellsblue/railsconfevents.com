@@ -2,6 +2,20 @@ class Conference < ActiveRecord::Base
   belongs_to :creator, foreign_key: "creator_user_id", class_name: "User"
   has_many :events
 
+  def each_day(active_user)
+    events = Event.for_user(active_user).to_a
+
+    allow_starting_at.upto allow_ending_at do |date|
+      day = Day.new self, events, date
+
+      if day.empty?
+        next unless day.conference_day?
+      end
+
+      yield day
+    end
+  end
+
   def example_event_date
     (starting_at + 1.day).strftime "%-m/%-d/%Y"
   end

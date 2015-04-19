@@ -64,11 +64,11 @@ class Event < ActiveRecord::Base
       order :starting_at, :ending_at, :name
     end
 
-    def for_day(active_user, day)
+    def for_user(active_user)
       if active_user.admin?
-        includes(:creator).not_deleted.on_day(Date.strptime(day, "%m/%d/%Y")).display_order
+        includes(:creator).not_deleted.display_order
       else
-        includes(:creator).listed_or_by(active_user).not_deleted.on_day(Date.strptime(day, "%m/%d/%Y")).display_order
+        includes(:creator).listed_or_by(active_user).not_deleted.display_order
       end
     end
 
@@ -86,10 +86,6 @@ class Event < ActiveRecord::Base
 
     def not_deleted
       where deleted: false
-    end
-
-    def on_day(day)
-      where starting_at: (day.beginning_of_day..day.end_of_day)
     end
   end
 end

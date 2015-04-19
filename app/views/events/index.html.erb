@@ -6,7 +6,7 @@
 
 <div class="row">
   <div class="col-sm-10 col-md-8">
-    <% 18.upto 26 do |day| %>
+    <% current_conference.each_day active_user do |day| %>
       <%= partial "events", day: day %>
     <% end %>
   </div>
