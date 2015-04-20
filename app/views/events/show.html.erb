@@ -1,3 +1,4 @@
 <h2><%= @event.name %></h2>
 <%= render @event %>
 <%= partial "events/editing_buttons", event: @event, wrap: true %>
+<%= partial "comments/collection", event: @event %>

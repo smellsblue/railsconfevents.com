@@ -1,0 +1,40 @@
+<div class="row">
+  <div class="col-sm-8">
+    <div class="well">
+      <h3>Comments</h3>
+
+      <hr />
+
+      <% if active_user.anonymous? %>
+        <p>
+          Please <a href="<%= user_omniauth_authorize_path :github %>">sign in or register</a>
+          to comment on this event.
+        </p>
+      <% else %>
+        <%= form_tag event_comments_path event, method: :post do %>
+          <div class="form-group">
+            <label for="comment">Your comment</label>
+            <textarea class="form-control" id="comment" name="comment" placeholder="Comment on this event, please be respectful :-)" rows="5"></textarea>
+          </div>
+
+          <input type="submit" class="btn btn-default" value="Submit">
+        <% end %>
+      <% end %>
+
+      <% event.displayable_comments.each do |comment| %>
+        <hr />
+
+        <%= simple_format comment.text %>
+
+        <p class="text-italic">
+          <%= user_avatar event.creator %>
+          <%= user_github_link event.creator %>
+
+          <span class="pull-right">
+            <%= local_time comment.created_at %>
+          </span>
+        </p>
+      <% end %>
+    </div>
+  </div>
+</div>

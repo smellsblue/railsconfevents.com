@@ -13,6 +13,15 @@ module EventCreator
     admin?
   end
 
+  def comment_on_event!(params)
+    event = Event.find params[:event_id]
+
+    event.comments.create! do |comment|
+      comment.creator = self
+      comment.text = params[:comment]
+    end
+  end
+
   def create_event!(params, ip)
     Event.create! do |event|
       event.conference = Conference.current
@@ -59,6 +68,10 @@ module EventCreator
 
     def can_list?(event)
       false
+    end
+
+    def comment_on_event!(params)
+      raise PermissionError.new
     end
 
     def create_event!(params, ip)

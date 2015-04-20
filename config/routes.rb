@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     member do
       post :list
     end
+
+    resources :comments, only: [:create]
   end
 
   resources :users, only: [:index] do

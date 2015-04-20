@@ -33,18 +33,16 @@
 <% end %>
 
 <% if event.description.present? %>
-  <p>
-    <em><%= event.description %></em>
-  </p>
+  <div class="text-italic">
+    <%= simple_format event.description %>
+  </div>
 <% end %>
 
 <% if event.creator.present? %>
-  <p>
-    <em>
-      submitted by
-      <%= user_avatar event.creator %>
-      <%= user_github_link event.creator %>
-    </em>
+  <p class="text-italic">
+    submitted by
+    <%= user_avatar event.creator %>
+    <%= user_github_link event.creator %>
   </p>
 <% elsif active_user.admin? && event.anonymous_user_ip.present? %>
   <p>

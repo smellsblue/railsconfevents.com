@@ -46,6 +46,10 @@ class Event < ActiveRecord::Base
     starting_at.strftime "%-I:%M %p"
   end
 
+  def displayable_comments
+    comments.for_display
+  end
+
   def edit_date
     if starting_at
       starting_at.strftime "%-m/%-d/%Y"

@@ -135,7 +135,7 @@ class EventTest < ActiveSupport::TestCase
 
   def test_comment_as_normal_user
     event = events :tv_night
-    users(:leela).comment_on_event! id: event.id.to_s, comment: "I'm in!"
+    users(:leela).comment_on_event! event_id: event.id.to_s, comment: "I'm in!"
     event.reload
     comment = event.comments.first
     assert_equal "I'm in!", comment.text
@@ -147,7 +147,7 @@ class EventTest < ActiveSupport::TestCase
     original_comment_count = event.comments.count
 
     assert_raises PermissionError do
-      Anonymous.user.comment_on_event! id: event.id.to_s, comment: "I'm in!"
+      Anonymous.user.comment_on_event! event_id: event.id.to_s, comment: "I'm in!"
     end
 
     event.reload
