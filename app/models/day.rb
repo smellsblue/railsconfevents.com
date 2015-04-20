@@ -11,21 +11,56 @@ class Day
     date >= conference.starting_at && date <= conference.ending_at
   end
 
+  def current?
+    time_state == :current
+  end
+
   def display_classes
-    if date < Date.today
+    case time_state
+    when :past
       "past"
-    elsif date == Date.today
+    when :current
       "current"
-    elsif date > Date.today
+    when :future
       "future"
     end
+  end
+
+  def display_id
+    date.strftime "day-%Y-%m-%d"
   end
 
   def empty?
     events.empty?
   end
 
+  def entirely_past?
+    if empty?
+      past?
+    else
+      events.all? { |x| x.past? }
+    end
+  end
+
+  def future?
+    time_state == :future
+  end
+
   def label
     date.strftime "%A, %B %-d"
+  end
+
+  def past?
+    time_state == :past
+  end
+
+  def time_state
+    if date < Date.today
+      :past
+    elsif date == Date.today
+      :current
+    elsif date > Date.today
+      :future
+    end
   end
 end

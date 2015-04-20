@@ -1,5 +1,18 @@
 $footer-height: 80px;
 
+@mixin day-colors($color) {
+    color: $color;
+
+    .day-expander {
+        color: $color;
+        text-decoration: none;
+
+        &:hover {
+          color: darken($color, 10%);
+        }
+    }
+}
+
 @mixin event-colors($color) {
     color: $color;
 
@@ -36,14 +49,22 @@ body {
 }
 
 .day-label {
+    @include day-colors($text-color);
+
     &.past {
-        color: $text-muted;
+        @include day-colors($text-muted);
         font-size: $font-size-h3;
     }
 
     &.current {
-        color: $state-success-text;
+        @include day-colors($state-success-text);
         font-weight: bold;
+    }
+}
+
+.day-content {
+    .event-well:last-child {
+        margin-bottom: 0px;
     }
 }
 

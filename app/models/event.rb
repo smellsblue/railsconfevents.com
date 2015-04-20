@@ -37,6 +37,10 @@ class Event < ActiveRecord::Base
     ending_at.strftime "%-I:%M %p"
   end
 
+  def display_id
+    "event-#{id}"
+  end
+
   def display_start_time
     starting_at.strftime "%-I:%M %p"
   end

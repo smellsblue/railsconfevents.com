@@ -1,91 +1,97 @@
-<h2 class="day-label <%= day.display_classes %>"><%= day.label %></h2>
+<h2 class="day-label <%= day.display_classes %>">
+  <a class="day-expander" data-toggle="collapse" href="#<%= day.display_id %>" aria-expanded="<%= !day.entirely_past? %>" aria-controls="<%= day.display_id %>">
+    <%= day.label %>
+  </a>
+</h2>
 
-<% if day.events.empty? %>
-  <em class="lead">None yet...</em>
-<% else %>
-  <% day.events.each do |event| %>
-    <div class="well event-well <%= event.display_classes active_user %>">
-      <div class="title">
-        <% unless event.listed? %>
-          <span class="label label-primary" data-toggle="tooltip" data-placement="top" title="This event is pending spam check before it is visible to everyone">unlisted</span>
-        <% end %>
+<div id="<%= day.display_id %>" class="day-content collapse <%= "in" unless day.entirely_past? %>">
+  <% if day.events.empty? %>
+    <em class="lead">None yet...</em>
+  <% else %>
+    <% day.events.each do |event| %>
+      <div class="well event-well <%= event.display_classes active_user %>">
+        <div class="title">
+          <% unless event.listed? %>
+            <span class="label label-primary" data-toggle="tooltip" data-placement="top" title="This event is pending spam check before it is visible to everyone">unlisted</span>
+          <% end %>
 
-        <a class="event-expander" data-toggle="collapse" href="#event-<%= event.id %>" aria-expanded="false" aria-controls="event-<%= event.id %>">
-          <%= event.name %>
-        </a>
+          <a class="event-expander" data-toggle="collapse" href="#<%= event.display_id %>" aria-expanded="<%= !event.past? %>" aria-controls="<%= event.display_id %>">
+            <%= event.name %>
+          </a>
+        </div>
+
+        <div id="<%= event.display_id %>" class="collapse <%= "in" unless event.past? %>">
+          <p>
+            <strong>Time:</strong>
+            <%= event.display_start_time %> - <%= event.display_end_time %>
+          </p>
+
+          <% if event.url.present? %>
+            <p>
+              <% if event.listed? %>
+                <a href="<%= event.url %>"><%= event.url %></a>
+              <% else %>
+                <strong>URL:</strong>
+                <%= event.url %>
+              <% end %>
+            </p>
+          <% end %>
+
+          <% if event.coordinator.present? %>
+            <p>
+              <strong>Coordinator:</strong>
+              <% if event.coordinator_twitter.present? %>
+                <a href="https://twitter.com/<%= event.coordinator_twitter %>"><%= event.coordinator %></a>
+              <% else %>
+                <%= event.coordinator %>
+              <% end %>
+            </p>
+          <% end %>
+
+          <% if event.location.present? %>
+            <p>
+              <strong>Location:</strong>
+              <%= event.location %>
+            </p>
+          <% end %>
+
+          <% if event.description.present? %>
+            <p>
+              <em><%= event.description %></em>
+            </p>
+          <% end %>
+
+          <% if event.creator.present? %>
+            <p>
+              <em>
+                submitted by
+                <%= user_avatar event.creator %>
+                <%= user_github_link event.creator %>
+              </em>
+            </p>
+          <% elsif active_user.admin? && event.anonymous_user_ip.present? %>
+            <p>
+              <em>
+                submitted by <%= event.anonymous_user_ip %>
+              </em>
+            </p>
+          <% end %>
+
+          <% if active_user.can_edit? event %>
+            <p>
+              <a class="btn btn-default" href="<%= edit_event_path event %>">edit</a>
+
+              <% if !event.listed? && active_user.can_list?(event) %>
+                <%= link_to "list", list_event_path(event), method: :post, class: "btn btn-danger", data: { confirm: "Are you sure you want to list that?" } %>
+              <% end %>
+
+              <% if active_user.can_delete? event %>
+                <%= link_to "delete", event_path(event), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure you want to delete that?" } %>
+              <% end %>
+            </p>
+          <% end %>
+        </div>
       </div>
-
-      <div id="event-<%= event.id %>" class="collapse <%= "in" unless event.past? %>">
-        <p>
-          <strong>Time:</strong>
-          <%= event.display_start_time %> - <%= event.display_end_time %>
-        </p>
-
-        <% if event.url.present? %>
-          <p>
-            <% if event.listed? %>
-              <a href="<%= event.url %>"><%= event.url %></a>
-            <% else %>
-              <strong>URL:</strong>
-              <%= event.url %>
-            <% end %>
-          </p>
-        <% end %>
-
-        <% if event.coordinator.present? %>
-          <p>
-            <strong>Coordinator:</strong>
-            <% if event.coordinator_twitter.present? %>
-              <a href="https://twitter.com/<%= event.coordinator_twitter %>"><%= event.coordinator %></a>
-            <% else %>
-              <%= event.coordinator %>
-            <% end %>
-          </p>
-        <% end %>
-
-        <% if event.location.present? %>
-          <p>
-            <strong>Location:</strong>
-            <%= event.location %>
-          </p>
-        <% end %>
-
-        <% if event.description.present? %>
-          <p>
-            <em><%= event.description %></em>
-          </p>
-        <% end %>
-
-        <% if event.creator.present? %>
-          <p>
-            <em>
-              submitted by
-              <%= user_avatar event.creator %>
-              <%= user_github_link event.creator %>
-            </em>
-          </p>
-        <% elsif active_user.admin? && event.anonymous_user_ip.present? %>
-          <p>
-            <em>
-              submitted by <%= event.anonymous_user_ip %>
-            </em>
-          </p>
-        <% end %>
-
-        <% if active_user.can_edit? event %>
-          <p>
-            <a class="btn btn-default" href="<%= edit_event_path event %>">edit</a>
-
-            <% if !event.listed? && active_user.can_list?(event) %>
-              <%= link_to "list", list_event_path(event), method: :post, class: "btn btn-danger", data: { confirm: "Are you sure you want to list that?" } %>
-            <% end %>
-
-            <% if active_user.can_delete? event %>
-              <%= link_to "delete", event_path(event), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure you want to delete that?" } %>
-            <% end %>
-          </p>
-        <% end %>
-      </div>
-    </div>
+    <% end %>
   <% end %>
-<% end %>
+</div>
