@@ -5,6 +5,7 @@ railsconf2014:
   allow_starting_at: 2014-04-19
   allow_ending_at: 2014-04-27
   year: 2014
+  timezone: Eastern Time (US & Canada)
 
 railsconf2015:
   creator: farnsworth
@@ -13,3 +14,4 @@ railsconf2015:
   allow_starting_at: 2015-04-18
   allow_ending_at: 2015-04-26
   year: 2015
+  timezone: Central Time (US & Canada)

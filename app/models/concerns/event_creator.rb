@@ -23,8 +23,7 @@ module EventCreator
   end
 
   def create_event!(params, ip)
-    Event.create! do |event|
-      event.conference = Conference.current
+    Conference.current.events.create! do |event|
       event.creator = self
       event.fill params
       event.listed = true
@@ -75,8 +74,7 @@ module EventCreator
     end
 
     def create_event!(params, ip)
-      Event.create! do |event|
-        event.conference = Conference.current
+      Conference.current.events.create! do |event|
         event.anonymous_user_ip = ip
         event.listed = false
         event.fill params

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150420064627) do
+ActiveRecord::Schema.define(version: 20150420194257) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "creator_user_id", null: false
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20150420064627) do
     t.integer  "year",              null: false
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.string   "timezone",          null: false
   end
 
   add_index "conferences", ["year"], name: "index_conferences_on_year", unique: true

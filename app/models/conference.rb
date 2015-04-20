@@ -28,12 +28,20 @@ class Conference < ActiveRecord::Base
     allow_starting_at.strftime "%Y-%m-%d"
   end
 
+  def parse_date_time(time_str)
+    zone.parse DateTime.strptime(time_str, "%m/%d/%Y %I:%M %p").strftime("%Y-%m-%d %H:%M:%S")
+  end
+
   def valid_end_date
     allow_ending_at.strftime "%-m/%-d"
   end
 
   def valid_start_date
     allow_starting_at.strftime "%-m/%-d"
+  end
+
+  def zone
+    ActiveSupport::TimeZone[timezone]
   end
 
   class << self

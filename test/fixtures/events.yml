@@ -4,8 +4,8 @@ robots_unite:
   location: The abandoned shed off New First Street
   listed: true
   anonymous_user_ip: 127.0.0.1
-  starting_at: 2015-04-22 18:00:00
-  ending_at: 2015-04-22 19:00:00
+  starting_at: 2015-04-22 18:00:00 EDT
+  ending_at: 2015-04-22 19:00:00 EDT
 
 science_o_rama:
   conference: railsconf2015
@@ -13,8 +13,8 @@ science_o_rama:
   creator: farnsworth
   location: Planet Express, NNY, NY
   listed: true
-  starting_at: 2015-04-21 10:00:00
-  ending_at: 2015-04-21 17:00:00
+  starting_at: 2015-04-21 10:00:00 EDT
+  ending_at: 2015-04-21 17:00:00 EDT
 
 tv_night:
   conference: railsconf2015
@@ -22,5 +22,5 @@ tv_night:
   creator: fry
   location: Fry's apartment
   listed: true
-  starting_at: 2015-04-21 20:00:00
-  ending_at: 2015-04-22 01:00:00
+  starting_at: 2015-04-21 20:00:00 EDT
+  ending_at: 2015-04-22 01:00:00 EDT
