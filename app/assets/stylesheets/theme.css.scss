@@ -1,5 +1,18 @@
 $footer-height: 80px;
 
+@mixin event-colors($color) {
+    color: $color;
+
+    .event-expander {
+        color: $color;
+        text-decoration: none;
+
+        &:hover {
+          color: darken($color, 10%);
+        }
+    }
+}
+
 html {
     position: relative;
     min-height: 100%;
@@ -12,16 +25,6 @@ body {
     margin-bottom: $footer-height;
 }
 
-.unlisted.well {
-    background-color: $state-danger-bg;
-    border-color: $state-danger-border;
-}
-
-.pending.well {
-    background-color: $state-warning-bg;
-    border-color: $state-warning-border;
-}
-
 .navbar {
     margin-bottom: 20px;
 
@@ -29,6 +32,51 @@ body {
         .navbar-text {
             padding: 10px 15px;
         }
+    }
+}
+
+.day-label {
+    &.past {
+        color: $text-muted;
+        font-size: $font-size-h3;
+    }
+
+    &.current {
+        color: $state-success-text;
+        font-weight: bold;
+    }
+}
+
+.event-well {
+    .title {
+        font-size: floor(($font-size-base * 1.15));
+
+        @media (min-width: $screen-sm-min) {
+            font-size: ($font-size-base * 1.5);
+        }
+    }
+
+    @include event-colors($text-color);
+
+    &.current {
+        background-color: $state-success-bg;
+        border-color: $state-success-border;
+
+        @include event-colors($state-success-text);
+    }
+
+    &.past {
+        @include event-colors($text-muted);
+    }
+
+    &.pending {
+        background-color: $state-warning-bg;
+        border-color: $state-warning-border;
+    }
+
+    &.unlisted {
+        background-color: $state-danger-bg;
+        border-color: $state-danger-border;
     }
 }
 

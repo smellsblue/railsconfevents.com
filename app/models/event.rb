@@ -6,6 +6,33 @@ class Event < ActiveRecord::Base
   validates_format_of :coordinator_twitter, :with => /\A[a-zA-Z0-9_]{0,15}\z/
   validate :date_within_conference_allowed_dates
 
+  def current?
+    time_state == :current
+  end
+
+  def display_classes(active_user)
+    classes = []
+
+    unless listed?
+      if active_user.admin?
+        classes << "unlisted"
+      else
+        classes << "pending"
+      end
+    end
+
+    case time_state
+    when :past
+      classes << "past"
+    when :current
+      classes << "current"
+    when :future
+      classes << "future"
+    end
+
+    classes.join " "
+  end
+
   def display_end_time
     ending_at.strftime "%-I:%M %p"
   end
@@ -44,6 +71,29 @@ class Event < ActiveRecord::Base
 
     if ending_at < starting_at
       self.ending_at += 1.day
+    end
+  end
+
+  def future?
+    time_state == :future
+  end
+
+  def past?
+    time_state == :past
+  end
+
+  def time_state
+    now = Time.now
+    # Ugh.... I did times wrong, but this will make it parse the same
+    # as when a new record is created or existing one is edited
+    now = DateTime.strptime "#{now.month}/#{now.day}/#{now.year} #{now.hour}:#{now.min}", "%m/%d/%Y %H:%M"
+
+    if ending_at < now
+      :past
+    elsif starting_at <= now && ending_at >= now
+      :current
+    elsif starting_at > now
+      :future
     end
   end
 

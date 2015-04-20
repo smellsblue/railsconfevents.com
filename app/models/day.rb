@@ -11,6 +11,16 @@ class Day
     date >= conference.starting_at && date <= conference.ending_at
   end
 
+  def display_classes
+    if date < Date.today
+      "past"
+    elsif date == Date.today
+      "current"
+    elsif date > Date.today
+      "future"
+    end
+  end
+
   def empty?
     events.empty?
   end
