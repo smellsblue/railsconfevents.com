@@ -38,7 +38,7 @@ class Day
     if empty?
       past?
     else
-      events.all? { |x| x.past? }
+      past? && events.all? { |x| x.past? }
     end
   end
 
