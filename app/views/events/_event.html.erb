@@ -1,0 +1,55 @@
+<p>
+  <strong>Time:</strong>
+  <%= event.display_start_time %> - <%= event.display_end_time %>
+</p>
+
+<% if event.url.present? %>
+  <p>
+    <% if event.listed? %>
+      <a href="<%= event.url %>"><%= event.url %></a>
+    <% else %>
+      <strong>URL:</strong>
+      <%= event.url %>
+    <% end %>
+  </p>
+<% end %>
+
+<% if event.coordinator.present? %>
+  <p>
+    <strong>Coordinator:</strong>
+    <% if event.coordinator_twitter.present? %>
+      <a href="https://twitter.com/<%= event.coordinator_twitter %>"><%= event.coordinator %></a>
+    <% else %>
+      <%= event.coordinator %>
+    <% end %>
+  </p>
+<% end %>
+
+<% if event.location.present? %>
+  <p>
+    <strong>Location:</strong>
+    <%= event.location %>
+  </p>
+<% end %>
+
+<% if event.description.present? %>
+  <p>
+    <em><%= event.description %></em>
+  </p>
+<% end %>
+
+<% if event.creator.present? %>
+  <p>
+    <em>
+      submitted by
+      <%= user_avatar event.creator %>
+      <%= user_github_link event.creator %>
+    </em>
+  </p>
+<% elsif active_user.admin? && event.anonymous_user_ip.present? %>
+  <p>
+    <em>
+      submitted by <%= event.anonymous_user_ip %>
+    </em>
+  </p>
+<% end %>

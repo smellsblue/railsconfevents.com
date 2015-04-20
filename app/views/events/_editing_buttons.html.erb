@@ -1,0 +1,13 @@
+<% if active_user.can_edit? event %>
+  <%= "<p>".html_safe if local_assigns[:wrap] %>
+    <a class="btn btn-default" href="<%= edit_event_path event %>">edit</a>
+
+    <% if !event.listed? && active_user.can_list?(event) %>
+      <%= link_to "list", list_event_path(event), method: :post, class: "btn btn-danger", data: { confirm: "Are you sure you want to list that?" } %>
+    <% end %>
+
+    <% if active_user.can_delete? event %>
+      <%= link_to "delete", event_path(event), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure you want to delete that?" } %>
+    <% end %>
+  <%= "</p>".html_safe if local_assigns[:wrap] %>
+<% end %>

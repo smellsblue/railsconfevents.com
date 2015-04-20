@@ -133,6 +133,27 @@ class EventTest < ActiveSupport::TestCase
     end
   end
 
+  def test_comment_as_normal_user
+    event = events :tv_night
+    users(:leela).comment_on_event! id: event.id.to_s, comment: "I'm in!"
+    event.reload
+    comment = event.comments.first
+    assert_equal "I'm in!", comment.text
+    assert_equal users(:leela), comment.creator
+  end
+
+  def test_comment_as_anonymous
+    event = events :tv_night
+    original_comment_count = event.comments.count
+
+    assert_raises PermissionError do
+      Anonymous.user.comment_on_event! id: event.id.to_s, comment: "I'm in!"
+    end
+
+    event.reload
+    assert_equal original_comment_count, event.comments.count
+  end
+
   private
 
   def edit_event_params(event, new_params)

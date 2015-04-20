@@ -28,6 +28,10 @@ class EventsController < ApplicationController
   def new
   end
 
+  def show
+    @event = Event.find params[:id]
+  end
+
   def update
     active_user.edit_event! params
     flash[:info] = "Thanks for editing your event!"
