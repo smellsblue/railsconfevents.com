@@ -9,8 +9,8 @@ class AddTimezoneToConference < ActiveRecord::Migration
       conference.save!
 
       conference.events.each do |event|
-        event.starting_at = fixed_time conference, event.starting_at
-        event.ending_at = fixed_time conference, event.ending_at
+        event.starting_at = fixed_time conference, event.read_attribute(:starting_at)
+        event.ending_at = fixed_time conference, event.read_attribute(:ending_at)
         event.save!
       end
     end
