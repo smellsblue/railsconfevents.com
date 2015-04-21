@@ -27,8 +27,8 @@
         <%= simple_format comment.text %>
 
         <p class="text-italic">
-          <%= user_avatar event.creator %>
-          <%= user_github_link event.creator %>
+          <%= user_avatar comment.creator %>
+          <%= user_github_link comment.creator %>
 
           <span class="pull-right">
             <%= local_time comment.created_at %>
