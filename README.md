@@ -13,8 +13,17 @@ application available.  Create a config/application.yml file to store your envir
 ### Github
 * Go to https://github.com/settings/applications/new, fill out the form.  The callback URL should be something along the
 lines of http://localhost:3000/users/auth/github/callback, depending on how exactly you're running the server and what port it is on.
-* After submitting the form, record the provided Client ID and Client Secret.  Put those values in the application.yml file
+* After submitting the form, record the provided 'Client ID' and 'Client Secret'.  Put those values in the application.yml file
 with the keys RAILSCONFEVENTS_GITHUB_KEY and RAILSCONFEVENTS_GITHUB_SECRET, respectively.
+
+### Twitter
+* This application will send all tweets from a single Twitter account.  If necessary, create a new account, and follow the next
+steps while logged into that account.
+* Go to http://apps.twitter.com, and create a new app.  Nothing needs to be filled in on the Callback URL field.
+* In the 'Keys and Access Tokens' tab, copy the 'Consumer Key (API Key)' and 'Consumer Secret (API Secret)' values into
+application.yml with the keys RAILSCONFEVENTS_TWITTER_KEY and RAILSCONFEVENTS_TWITTER_SECRET, respectively.
+* Towards the bottom of the same page, click the button to activate "Your Access Token".  Copy the 'Access Token' and
+'Access Token Secret' to your application.yml as TWITTER_ACCESS_TOKEN and TWITTER_ACCESS_SECRET, respectively.
 
 ## Ideas?
 
