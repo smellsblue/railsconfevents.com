@@ -5,6 +5,17 @@ repository of the official and unofficial events happening during (and
 surrounding) RailsConf 2015. If it goes well, then it could be a site that
 sticks around for every RailsConf to list past and present RailsConf events.
 
+## Getting Started
+You'll need to have both Github and Twitter applications set up in order to get have the full functionality of the
+application available.  Create a config/application.yml file to store your environment variables.
+
+
+### Github
+* Go to https://github.com/settings/applications/new, fill out the form.  The callback URL should be something along the
+lines of http://localhost:3000/users/auth/github/callback, depending on how exactly you're running the server and what port it is on.
+* After submitting the form, record the provided Client ID and Client Secret.  Put those values in the application.yml file
+with the keys RAILSCONFEVENTS_GITHUB_KEY and RAILSCONFEVENTS_GITHUB_SECRET, respectively.
+
 ## Ideas?
 
 Go ahead and open an issue on GitHub! If you want to dive in to the code, go
