@@ -33,6 +33,20 @@
             <input type="text" class="form-control" id="twitter_handle" name="twitter_handle" value="<%= active_user.twitter_handle %>" />
           </div>
         </div>
+
+        <div class="col-sm-12">
+          <div class="form-group">
+            <label>Notify me of new events via:</label>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="form-group">
+            <input type="hidden" name="notify_twitter" value="0">
+            <input type="checkbox" name="notify_twitter" id="notify_twitter" value="1" <%= 'checked' if active_user.notify_twitter? %>>
+            <label for="notify_twitter">Twitter</label>
+          </div>
+        </div>
       </div>
     </div>
   </div>

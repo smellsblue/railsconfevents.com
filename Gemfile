@@ -8,11 +8,13 @@ gem "jbuilder", "~> 2.0"
 gem "jquery-rails"
 gem "local_time"
 gem "omniauth-github"
+gem "omniauth-twitter"
 gem "rails", "~> 4.2.1"
 gem "sass-rails", "~> 5.0"
 gem "sdoc", "~> 0.4.0", group: :doc
 gem "therubyracer", platforms: :ruby
 gem "turbolinks"
+gem "twitter"
 gem "twitter-bootstrap-rails-confirm"
 gem "uglifier", ">= 1.3.0"
 
