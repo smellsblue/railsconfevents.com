@@ -16,8 +16,8 @@ module UserInfo
     self.name = params[:name]
     self.email = params[:email]
     self.twitter_handle = params[:twitter_handle]
-    self.notify_twitter = params[:notify_twitter]
-    self.notify_email = params[:notify_email]
+    self.notify_twitter = params[:notify_twitter] == "true"
+    self.notify_email = params[:notify_email] == "true"
 
     if really_admin?
       if params[:incognito] == "true" && !(role =~ /\Aincognito_/)

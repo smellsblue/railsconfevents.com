@@ -7,6 +7,18 @@ class ConferenceTest < ActiveSupport::TestCase
     end
   end
 
+  def test_current_after_all_known_conferences
+    Timecop.freeze Time.local(2015, 5, 10, 14, 10, 0) do
+      assert_equal conferences(:railsconf2015), Conference.current
+    end
+  end
+
+  def test_current_in_between_conferences
+    Timecop.freeze Time.local(2015, 1, 12, 14, 10, 0) do
+      assert_equal conferences(:railsconf2015), Conference.current
+    end
+  end
+
   def test_each_day_doesnt_include_empty_days_outside_conference
     conference = conferences :railsconf2015
     test_day = Date.strptime "2015-04-18"

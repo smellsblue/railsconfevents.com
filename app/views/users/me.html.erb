@@ -42,9 +42,19 @@
 
         <div class="col-sm-12">
           <div class="form-group">
-            <input type="hidden" name="notify_twitter" value="0">
-            <input type="checkbox" name="notify_twitter" id="notify_twitter" value="1" <%= 'checked' if active_user.notify_twitter? %>>
-            <label for="notify_twitter">Twitter</label>
+            <label>
+              <input type="checkbox" name="notify_twitter" value="true" <%= checked if active_user.notify_twitter? %>>
+              Twitter
+            </label>
+          </div>
+        </div>
+
+        <div class="col-sm-12 hidden">
+          <div class="form-group">
+            <label>
+              <input type="checkbox" name="notify_email" value="true" <%= checked if active_user.notify_email? %>>
+              Email
+            </label>
           </div>
         </div>
       </div>
@@ -56,7 +66,7 @@
       <div class="col-sm-8">
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="incognito" value="true" <%= %{checked="true"} if active_user.incognito_admin? %> />
+            <input type="checkbox" name="incognito" value="true" <%= checked if active_user.incognito_admin? %> />
             Incognito mode
           </label>
         </div>

@@ -46,7 +46,15 @@ class Conference < ActiveRecord::Base
 
   class << self
     def current
-      where("allow_ending_at > ?", Date.today).order("allow_ending_at ASC").first
+      upcoming || latest
+    end
+
+    def latest
+      where("allow_ending_at <= ?", Date.today).order("allow_ending_at DESC").first
+    end
+
+    def upcoming
+      where("allow_ending_at > ?", Date.today).order(:allow_ending_at).first
     end
   end
 end

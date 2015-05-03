@@ -3,6 +3,10 @@ module ApplicationHelper
     current_user || Anonymous.user
   end
 
+  def checked
+    'checked="true"'.html_safe
+  end
+
   def current_conference
     @current_conference ||= Conference.current
   end

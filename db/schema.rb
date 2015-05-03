@@ -81,8 +81,8 @@ ActiveRecord::Schema.define(version: 20150425155436) do
     t.datetime "updated_at",                           null: false
     t.string   "role",                default: "user", null: false
     t.string   "twitter_handle",      default: ""
-    t.boolean  "notify_email",        default: false
-    t.boolean  "notify_twitter",      default: false
+    t.boolean  "notify_email",        default: false,  null: false
+    t.boolean  "notify_twitter",      default: false,  null: false
   end
 
   add_index "users", ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true, using: :btree
