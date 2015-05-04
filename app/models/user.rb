@@ -4,8 +4,12 @@ class User < ActiveRecord::Base
 
   before_save :adjust_twitter_handle
 
+  private
+
   def adjust_twitter_handle
-    self.twitter_handle = "@#{self.twitter_handle}" if self.twitter_handle.present? && self.twitter_handle[0] != '@'
+    if twitter_handle.present? && twitter_handle[0] != "@"
+      self.twitter_handle = "@#{self.twitter_handle}"
+    end
   end
 
   class << self

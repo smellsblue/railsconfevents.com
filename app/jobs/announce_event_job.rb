@@ -5,13 +5,14 @@ class AnnounceEventJob < ActiveJob::Base
 
   def perform(event)
     client = Twitter::REST::Client.new do |config|
-      config.consumer_key = ENV['RAILSCONFEVENTS_TWITTER_KEY']
-      config.consumer_secret = ENV['RAILSCONFEVENTS_TWITTER_SECRET']
-      config.access_token = ENV['TWITTER_ACCESS_TOKEN']
-      config.access_token_secret = ENV['TWITTER_ACCESS_SECRET']
+      config.consumer_key = ENV["RAILSCONFEVENTS_TWITTER_KEY"]
+      config.consumer_secret = ENV["RAILSCONFEVENTS_TWITTER_SECRET"]
+      config.access_token = ENV["TWITTER_ACCESS_TOKEN"]
+      config.access_token_secret = ENV["TWITTER_ACCESS_SECRET"]
     end
 
-    tweet_users = User.where('notify_twitter = ? AND twitter_handle <> ?', true, '')
+    tweet_users = User.where("notify_twitter = ? AND twitter_handle <> ?", true, "")
+
     tweet_users.each do |user|
       url = event_url(event.id)
       tweet = "#{user.twitter_handle}, there's a new event on RailsConfEvents! #{url}"
