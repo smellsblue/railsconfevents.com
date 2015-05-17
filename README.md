@@ -9,9 +9,11 @@ sticks around for every RailsConf to list past and present RailsConf events.
 
 You'll need to have both GitHub and Twitter applications set up in
 order to get have the full functionality of the application available.
-Create a config/application.yml file to store your environment
-variables.
-
+Run <code>rake setup</code> to initialize your config/database.yml and
+config/secrets.yml files. You will be asked to provide the various
+keys/tokens/secrets for your GitHub and Twitter applications. You may
+provide them as described below, or add them directly to your
+config/secrets.yml file.
 
 ### GitHub
 
@@ -21,9 +23,8 @@ http://localhost:3000/users/auth/github/callback, depending on how
 exactly you're running the server and what port it is on.
 
 * After submitting the form, record the provided 'Client ID' and
-'Client Secret'.  Put those values in the application.yml file with
-the keys RAILSCONFEVENTS_GITHUB_KEY and RAILSCONFEVENTS_GITHUB_SECRET,
-respectively.
+'Client Secret'.  Provide those values for github_key and
+github_secret respectively.
 
 ### Twitter
 
@@ -35,14 +36,13 @@ logged into that account.
 to be filled in on the Callback URL field.
 
 * In the 'Keys and Access Tokens' tab, copy the 'Consumer Key (API
-Key)' and 'Consumer Secret (API Secret)' values into application.yml
-with the keys RAILSCONFEVENTS_TWITTER_KEY and
-RAILSCONFEVENTS_TWITTER_SECRET, respectively.
+Key)' and 'Consumer Secret (API Secret)' values and provide them for
+twitter_consumer_key and twitter_consumer_secret respectively.
 
 * Towards the bottom of the same page, click the button to activate
 "Your Access Token".  Copy the 'Access Token' and 'Access Token
-Secret' to your application.yml as TWITTER_ACCESS_TOKEN and
-TWITTER_ACCESS_SECRET, respectively.
+Secret' and provide them for twitter_access_token and
+twitter_access_secret respectively.
 
 ## Ideas?
 
