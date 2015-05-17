@@ -5,10 +5,10 @@ class AnnounceEventJob < ActiveJob::Base
 
   def perform(event)
     client = Twitter::REST::Client.new do |config|
-      config.consumer_key = ENV["RAILSCONFEVENTS_TWITTER_KEY"]
-      config.consumer_secret = ENV["RAILSCONFEVENTS_TWITTER_SECRET"]
-      config.access_token = ENV["TWITTER_ACCESS_TOKEN"]
-      config.access_token_secret = ENV["TWITTER_ACCESS_SECRET"]
+      config.consumer_key = Rails.application.secrets.twitter_consumer_key
+      config.consumer_secret = Rails.application.secrets.twitter_consumer_secret
+      config.access_token = Rails.application.secrets.twitter_access_token
+      config.access_token_secret = Rails.application.secrets.twitter_access_secret
     end
 
     tweet_users = User.where("notify_twitter = ? AND twitter_handle <> ?", true, "")
