@@ -23,3 +23,8 @@ events, and approving an event is by no means an endorsement of that event by
 me or anyone else. Was all that really necessary to say? I think our
 community is pretty awesome, so I trust only awesome and inclusive events
 will be listed!
+
+## License
+
+This project is available as open source under the terms of the
+[MIT License](http://opensource.org/licenses/MIT).
