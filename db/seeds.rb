@@ -1,7 +1,5 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+# set up initial admin user
+User.create(name: 'admin', username: 'admin', email: 'admin@railsconfevents.com', provider: 'seed', uid: 'QWER3704TTQO')
+
+railsconf_2016 = Conference.create(starting_at: '2016-05-04', ending_at: '2016-05-06', allow_starting_at: '2016-05-02',
+                                   allow_ending_at: '2016-05-07', year: 2016, creator_user_id: 1, timezone: 'Central Time (US & Canada)')

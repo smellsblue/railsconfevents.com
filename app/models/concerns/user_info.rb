@@ -15,6 +15,9 @@ module UserInfo
     raise "Name is required!" unless params[:name].present?
     self.name = params[:name]
     self.email = params[:email]
+    self.twitter_handle = params[:twitter_handle]
+    self.notify_twitter = params[:notify_twitter]
+    self.notify_email = params[:notify_email]
 
     if really_admin?
       if params[:incognito] == "true" && !(role =~ /\Aincognito_/)

@@ -46,7 +46,7 @@ class Conference < ActiveRecord::Base
 
   class << self
     def current
-      where(year: Time.now.year).first
+      where('allow_ending_at > ?', Date.today).order('allow_ending_at ASC').first
     end
   end
 end

@@ -7,6 +7,12 @@ class Event < ActiveRecord::Base
   validates_format_of :coordinator_twitter, :with => /\A[a-zA-Z0-9_]{0,15}\z/
   validate :date_within_conference_allowed_dates
 
+  after_create :announce_event
+
+  def announce_event
+    AnnounceEventJob.perform_later self
+  end
+
   def current?
     time_state == :current
   end

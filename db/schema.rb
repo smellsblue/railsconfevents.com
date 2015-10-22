@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150420194257) do
+ActiveRecord::Schema.define(version: 20150425155436) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "comments", force: :cascade do |t|
     t.integer  "creator_user_id", null: false
@@ -21,7 +24,7 @@ ActiveRecord::Schema.define(version: 20150420194257) do
     t.datetime "updated_at",      null: false
   end
 
-  add_index "comments", ["event_id", "created_at"], name: "index_comments_on_event_id_and_created_at"
+  add_index "comments", ["event_id", "created_at"], name: "index_comments_on_event_id_and_created_at", using: :btree
 
   create_table "conferences", force: :cascade do |t|
     t.integer  "creator_user_id",   null: false
@@ -35,7 +38,7 @@ ActiveRecord::Schema.define(version: 20150420194257) do
     t.string   "timezone",          null: false
   end
 
-  add_index "conferences", ["year"], name: "index_conferences_on_year", unique: true
+  add_index "conferences", ["year"], name: "index_conferences_on_year", unique: true, using: :btree
 
   create_table "events", force: :cascade do |t|
     t.integer  "creator_user_id"
@@ -58,7 +61,7 @@ ActiveRecord::Schema.define(version: 20150420194257) do
     t.integer  "comments_count",      default: 0,     null: false
   end
 
-  add_index "events", ["starting_at"], name: "index_events_on_starting_at"
+  add_index "events", ["starting_at"], name: "index_events_on_starting_at", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
@@ -77,8 +80,17 @@ ActiveRecord::Schema.define(version: 20150420194257) do
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.string   "role",                default: "user", null: false
+    t.string   "twitter_handle",      default: ""
+    t.boolean  "notify_email",        default: false
+    t.boolean  "notify_twitter",      default: false
   end
 
-  add_index "users", ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
+  add_index "users", ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true, using: :btree
 
+  add_foreign_key "comments", "events"
+  add_foreign_key "comments", "users", column: "creator_user_id"
+  add_foreign_key "conferences", "users", column: "creator_user_id"
+  add_foreign_key "events", "conferences"
+  add_foreign_key "events", "users", column: "creator_user_id"
+  add_foreign_key "events", "users", column: "deleted_by_user_id"
 end

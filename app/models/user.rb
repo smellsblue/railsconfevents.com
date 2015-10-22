@@ -2,6 +2,12 @@ class User < ActiveRecord::Base
   devise :omniauthable, :rememberable, :trackable
   include IsUser
 
+  before_save :adjust_twitter_handle
+
+  def adjust_twitter_handle
+    self.twitter_handle = "@#{self.twitter_handle}" if self.twitter_handle.present? && self.twitter_handle[0] != '@'
+  end
+
   class << self
     def for_admin
       order(:name, :username, :email)
