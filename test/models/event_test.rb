@@ -159,8 +159,8 @@ class EventTest < ActiveSupport::TestCase
   def edit_event_params(event, new_params)
     { id: event.id,
       name: event.name,
-      coordinator: event.coordinator,
-      coordinator_twitter: event.coordinator_twitter,
+      coordinator: (event.coordinators.first.name unless event.coordinators.empty?),
+      coordinator_twitter: (event.coordinators.first.twitter unless event.coordinators.empty?),
       url: event.url,
       location: event.location,
       description: event.description,

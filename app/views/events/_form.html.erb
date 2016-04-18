@@ -32,7 +32,7 @@
       <div class="col-sm-6">
         <div class="form-group">
           <label for="coordinator">Coordinator</label>
-          <input type="text" class="form-control" id="coordinator" name="coordinator" placeholder="Coordinator" value="<%= event.coordinator %>" />
+          <input type="text" class="form-control" id="coordinator" name="coordinator" placeholder="Coordinator" value="<%= event.coordinators.first.name unless event.coordinators.empty? %>" />
         </div>
       </div>
 
@@ -42,7 +42,7 @@
 
           <div class="input-group">
             <span class="input-group-addon" id="twitter_coordinator_at">@</span>
-            <input type="text" class="form-control" id="coordinator_twitter" name="coordinator_twitter" placeholder="Coordinator" aria-describedby="twitter_coordinator_at" data-guard="twitter" value="<%= event.coordinator_twitter %>" />
+            <input type="text" class="form-control" id="coordinator_twitter" name="coordinator_twitter" placeholder="Coordinator" aria-describedby="twitter_coordinator_at" data-guard="twitter" value="<%= event.coordinators.first.twitter unless event.coordinators.empty? %>" />
           </div>
         </div>
       </div>

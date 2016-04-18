@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150420194257) do
+ActiveRecord::Schema.define(version: 20160418010912) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,25 +40,32 @@ ActiveRecord::Schema.define(version: 20150420194257) do
 
   add_index "conferences", ["year"], name: "index_conferences_on_year", unique: true, using: :btree
 
+  create_table "coordinators", force: :cascade do |t|
+    t.integer "event_id", null: false
+    t.integer "user_id"
+    t.string  "name"
+    t.string  "twitter"
+  end
+
+  add_index "coordinators", ["event_id"], name: "index_coordinators_on_event_id", using: :btree
+
   create_table "events", force: :cascade do |t|
     t.integer  "creator_user_id"
     t.string   "anonymous_user_ip"
-    t.string   "name",                                null: false
-    t.string   "coordinator"
-    t.string   "coordinator_twitter"
+    t.string   "name",                               null: false
     t.string   "url"
     t.string   "location"
     t.text     "description"
-    t.datetime "starting_at",                         null: false
-    t.datetime "ending_at",                           null: false
-    t.boolean  "listed",                              null: false
-    t.boolean  "deleted",             default: false, null: false
+    t.datetime "starting_at",                        null: false
+    t.datetime "ending_at",                          null: false
+    t.boolean  "listed",                             null: false
+    t.boolean  "deleted",            default: false, null: false
     t.datetime "deleted_at"
     t.integer  "deleted_by_user_id"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.integer  "conference_id",                       null: false
-    t.integer  "comments_count",      default: 0,     null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.integer  "conference_id",                      null: false
+    t.integer  "comments_count",     default: 0,     null: false
   end
 
   add_index "events", ["starting_at"], name: "index_events_on_starting_at", using: :btree

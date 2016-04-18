@@ -14,15 +14,15 @@
   </p>
 <% end %>
 
-<% if event.coordinator.present? || event.coordinator_twitter.present? %>
+<% unless event.coordinators.empty? %>
   <p>
     <strong>Coordinator:</strong>
-    <% if event.coordinator.present? && event.coordinator_twitter.present? %>
-      <a href="https://twitter.com/<%= event.coordinator_twitter %>"><%= event.coordinator %></a>
-    <% elsif event.coordinator_twitter.present? %>
-      <a href="https://twitter.com/<%= event.coordinator_twitter %>">@<%= event.coordinator_twitter %></a>
+    <% if event.coordinators.first.name.present? && event.coordinators.first.twitter.present? %>
+      <a href="https://twitter.com/<%= event.coordinators.first.twitter %>"><%= event.coordinators.first.name %></a>
+    <% elsif event.coordinators.first.twitter.present? %>
+      <a href="https://twitter.com/<%= event.coordinators.first.twitter %>">@<%= event.coordinators.first.twitter %></a>
     <% else %>
-      <%= event.coordinator %>
+      <%= event.coordinators.first.name %>
     <% end %>
   </p>
 <% end %>
