@@ -33,6 +33,14 @@ module ApplicationHelper
     render partial: name, locals: locals
   end
 
+  def user_singup_and_login_path
+    if Rails.env.production?
+      user_omniauth_authorize_path :github
+    else
+      user_omniauth_authorize_path :developer
+    end
+  end
+
   def user_avatar(user, options = { height: "16" })
     if user.avatar.present?
       image_tag user.avatar, options
