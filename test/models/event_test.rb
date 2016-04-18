@@ -3,7 +3,7 @@ require "test_helper"
 class EventTest < ActiveSupport::TestCase
   def test_create_event_as_admin_user
     event = users(:farnsworth).create_event!({ name: "An event",
-                                               date: "4/22/2015",
+                                               date: "4/22/#{current_year}",
                                                start_time: "7:00 pm",
                                                end_time: "8:00 pm" }, "127.0.0.1")
     event.reload
@@ -14,7 +14,7 @@ class EventTest < ActiveSupport::TestCase
 
   def test_create_event_as_normal_user
     event = users(:fry).create_event!({ name: "An event",
-                                        date: "4/22/2015",
+                                        date: "4/22/#{current_year}",
                                         start_time: "7:00 pm",
                                         end_time: "8:00 pm" }, "127.0.0.1")
     event.reload
@@ -25,7 +25,7 @@ class EventTest < ActiveSupport::TestCase
 
   def test_create_event_as_anonymous
     event = Anonymous.user.create_event!({ name: "An event",
-                                           date: "4/22/2015",
+                                           date: "4/22/#{current_year}",
                                            start_time: "7:00 pm",
                                            end_time: "8:00 pm" }, "127.0.0.1")
     event.reload
@@ -37,14 +37,14 @@ class EventTest < ActiveSupport::TestCase
   def test_create_with_invalid_date
     assert_raises ActiveRecord::RecordInvalid do
       users(:fry).create_event!({ name: "An event",
-                                  date: "4/17/2015",
+                                  date: "4/17/#{current_year}",
                                   start_time: "7:00 pm",
                                   end_time: "8:00 pm" }, "127.0.0.1")
     end
 
     assert_raises ActiveRecord::RecordInvalid do
       users(:fry).create_event!({ name: "An event",
-                                  date: "4/27/2015",
+                                  date: "4/27/#{current_year}",
                                   start_time: "7:00 pm",
                                   end_time: "8:00 pm" }, "127.0.0.1")
     end
@@ -125,11 +125,11 @@ class EventTest < ActiveSupport::TestCase
     event = events :tv_night
 
     assert_raises ActiveRecord::RecordInvalid do
-      users(:fry).edit_event! edit_event_params(event, date: "4/17/2015")
+      users(:fry).edit_event! edit_event_params(event, date: "4/17/#{current_year}")
     end
 
     assert_raises ActiveRecord::RecordInvalid do
-      users(:fry).edit_event! edit_event_params(event, date: "4/27/2015")
+      users(:fry).edit_event! edit_event_params(event, date: "4/27/#{current_year}")
     end
   end
 

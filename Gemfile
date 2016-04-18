@@ -20,11 +20,14 @@ group :production do
   gem "pg"
 end
 
+group :development do
+  gem "web-console", "~> 2.0"
+end
+
 group :development, :test do
   gem "byebug"
   gem "spring"
   gem "sqlite3"
-  gem "web-console", "~> 2.0"
 end
 
 group :test do
