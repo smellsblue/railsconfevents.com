@@ -74,11 +74,7 @@ class Event < ActiveRecord::Base
 
   def fill(params)
     self.name = params[:name]
-
-    if params[:coordinator].present? || params[:coordinator_twitter].present?
-      coordinators.build name: params[:coordinator], twitter: params[:coordinator_twitter]
-    end
-
+    fill_coordinators(params)
     self.url = params[:url]
     self.location = params[:location]
     self.description = params[:description]
@@ -87,6 +83,17 @@ class Event < ActiveRecord::Base
 
     if ending_at < starting_at
       self.ending_at += 1.day
+    end
+  end
+
+  def fill_coordinators(params)
+    return if params[:coordinators].blank? && params[:coordinator_twitters].blank?
+    raise "Invalid coordinators!" unless params[:coordinators].size == params[:coordinator_twitters].size
+
+    params[:coordinators].each_with_index do |name, i|
+      twitter = params[:coordinator_twitters][i]
+      next if name.blank? && twitter.blank?
+      coordinators.build name: name, twitter: twitter
     end
   end
 

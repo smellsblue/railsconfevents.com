@@ -31,18 +31,18 @@
     <div class="row">
       <div class="col-sm-6">
         <div class="form-group">
-          <label for="coordinator">Coordinator</label>
-          <input type="text" class="form-control" id="coordinator" name="coordinator" placeholder="Coordinator" value="<%= event.coordinators.first.name unless event.coordinators.empty? %>" />
+          <label for="coordinator-0">Coordinator</label>
+          <input type="text" class="form-control" id="coordinator-0" name="coordinators[]" placeholder="Coordinator" value="<%= event.coordinators.first.name unless event.coordinators.empty? %>" />
         </div>
       </div>
 
       <div class="col-sm-6">
         <div class="form-group">
-          <label for="coordinator_twitter"><span class="visible-xs-inline">Coordinator </span>Twitter</label>
+          <label for="coordinator_twitter-0"><span class="visible-xs-inline">Coordinator </span>Twitter</label>
 
           <div class="input-group">
-            <span class="input-group-addon" id="twitter_coordinator_at">@</span>
-            <input type="text" class="form-control" id="coordinator_twitter" name="coordinator_twitter" placeholder="Coordinator" aria-describedby="twitter_coordinator_at" data-guard="twitter" value="<%= event.coordinators.first.twitter unless event.coordinators.empty? %>" />
+            <span class="input-group-addon" id="twitter_coordinator_at-0">@</span>
+            <input type="text" class="form-control" id="coordinator_twitter-0" name="coordinator_twitters[]" placeholder="Coordinator" aria-describedby="twitter_coordinator_at-0" data-guard="twitter" value="<%= event.coordinators.first.twitter unless event.coordinators.empty? %>" />
           </div>
         </div>
       </div>

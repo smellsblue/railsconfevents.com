@@ -23,10 +23,12 @@ module EventCreator
   end
 
   def create_event!(params, ip)
-    Conference.current.events.create! do |event|
-      event.creator = self
-      event.fill params
-      event.listed = true
+    transaction do
+      Conference.current.events.create! do |event|
+        event.creator = self
+        event.fill params
+        event.listed = true
+      end
     end
   end
 

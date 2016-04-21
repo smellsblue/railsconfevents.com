@@ -23,6 +23,29 @@ class EventTest < ActiveSupport::TestCase
     assert_nil event.anonymous_user_ip, "User ip is not stored when creating an event"
   end
 
+  def test_create_event_with_multiple_non_user_coordinators
+    event = users(:fry).create_event!({ name: "An event",
+                                        date: "4/22/#{current_year}",
+                                        coordinators: ["John Doe", ""],
+                                        coordinator_twitters: ["", "joandoe"],
+                                        start_time: "7:00 pm",
+                                        end_time: "8:00 pm" }, "127.0.0.1")
+    event.reload
+    assert_equal ["John Doe", ""], event.coordinators.map(&:name)
+    assert_equal ["", "joandoe"], event.coordinators.map(&:twitter)
+  end
+
+  def test_ignore_empty_coordinators
+    event = users(:fry).create_event!({ name: "An event",
+                                        date: "4/22/#{current_year}",
+                                        coordinators: ["", ""],
+                                        coordinator_twitters: ["", ""],
+                                        start_time: "7:00 pm",
+                                        end_time: "8:00 pm" }, "127.0.0.1")
+    event.reload
+    assert event.coordinators.empty?
+  end
+
   def test_create_event_as_anonymous
     event = Anonymous.user.create_event!({ name: "An event",
                                            date: "4/22/#{current_year}",
@@ -159,8 +182,8 @@ class EventTest < ActiveSupport::TestCase
   def edit_event_params(event, new_params)
     { id: event.id,
       name: event.name,
-      coordinator: (event.coordinators.first.name unless event.coordinators.empty?),
-      coordinator_twitter: (event.coordinators.first.twitter unless event.coordinators.empty?),
+      coordinators: ([event.coordinators.first.name] unless event.coordinators.empty?),
+      coordinator_twitters: ([event.coordinators.first.twitter] unless event.coordinators.empty?),
       url: event.url,
       location: event.location,
       description: event.description,
