@@ -46,6 +46,26 @@ class EventTest < ActiveSupport::TestCase
     assert event.coordinators.empty?
   end
 
+  def test_create_event_with_self_as_coordinator
+    event = users(:fry).create_event!({ name: "An event",
+                                        date: "4/22/#{current_year}",
+                                        coordinator_githubs: [users(:fry).username.to_s],
+                                        start_time: "7:00 pm",
+                                        end_time: "8:00 pm" }, "127.0.0.1")
+    event.reload
+    assert_equal [users(:fry)], event.coordinators.map(&:user)
+  end
+
+  def test_create_event_with_invalid_user
+    event = users(:fry).create_event!({ name: "An event",
+                                        date: "4/22/#{current_year}",
+                                        coordinator_githubs: ["invalid"],
+                                        start_time: "7:00 pm",
+                                        end_time: "8:00 pm" }, "127.0.0.1")
+    event.reload
+    assert event.coordinators.empty?
+  end
+
   def test_create_event_as_anonymous
     event = Anonymous.user.create_event!({ name: "An event",
                                            date: "4/22/#{current_year}",

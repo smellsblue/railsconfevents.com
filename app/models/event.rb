@@ -87,10 +87,16 @@ class Event < ActiveRecord::Base
   end
 
   def fill_coordinators(params)
-    return if params[:coordinators].blank? && params[:coordinator_twitters].blank?
-    raise "Invalid coordinators!" unless params[:coordinators].size == params[:coordinator_twitters].size
+    return if params[:coordinator_githubs].blank? && params[:coordinators].blank? && params[:coordinator_twitters].blank?
+    raise "Invalid coordinators!" unless params[:coordinators].to_a.size == params[:coordinator_twitters].to_a.size
 
-    params[:coordinators].each_with_index do |name, i|
+    params[:coordinator_githubs].to_a.each do |github|
+      user = User.find_by_username(github)
+      next unless user
+      coordinators.build user: user
+    end
+
+    params[:coordinators].to_a.each_with_index do |name, i|
       twitter = params[:coordinator_twitters][i]
       next if name.blank? && twitter.blank?
       coordinators.build name: name, twitter: twitter
