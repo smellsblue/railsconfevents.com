@@ -70,7 +70,7 @@
         </div>
       <% end %>
 
-      <div class="row new-coordinator" id="new-coordinator-row">
+      <div class="row new-coordinator">
         <% if event.coordinators.present? %>
           <hr class="visible-xs-block" />
         <% end %>
@@ -106,6 +106,43 @@
           </div>
         <% end %>
       </div>
+
+      <script type="text/x-tmpl" id="new-coordinator-template">
+        <div class="row new-coordinator">
+          <hr class="visible-xs-block" />
+
+          <div class="<%= coordinator_col_class %>">
+            <div class="form-group">
+              <label for="coordinator-new-{%= o.rowSize %}">Coordinator</label>
+              <input type="text" class="form-control" id="coordinator-new-{%= o.rowSize %}" name="coordinators[]" placeholder="Coordinator" />
+            </div>
+          </div>
+
+          <div class="<%= coordinator_col_class %>">
+            <div class="form-group">
+              <label for="coordinator_twitter-new-{%= o.rowSize %}"><span class="visible-xs-inline">Coordinator </span>Twitter</label>
+
+              <div class="input-group">
+                <span class="input-group-addon" id="twitter_coordinator_at-new-{%= o.rowSize %}">@</span>
+                <input type="text" class="form-control" id="coordinator_twitter-new-{%= o.rowSize %}" name="coordinator_twitters[]" placeholder="Coordinator" aria-describedby="twitter_coordinator_at-new-{%= o.rowSize %}" data-guard="twitter" />
+              </div>
+            </div>
+          </div>
+
+          <% if active_user.can_specify_user_coordinators? %>
+            <div class="<%= coordinator_col_class %>">
+              <div class="form-group">
+                <label for="coordinator_github-new-{%= o.rowSize %}"><span class="visible-xs-inline">Coordinator </span>GitHub</label>
+
+                <div class="input-group">
+                  <span class="input-group-addon" id="github_coordinator_at-new-{%= o.rowSize %}">@</span>
+                  <input type="text" class="form-control" id="coordinator_github-new-{%= o.rowSize %}" name="coordinator_githubs[]" placeholder="Coordinator" aria-describedby="github_coordinator_at-new-{%= o.rowSize %}" data-guard="github" />
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </script>
     </fieldset>
 
     <div class="form-group">
