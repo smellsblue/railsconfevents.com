@@ -32,116 +32,13 @@
       <legend>Coordinators</legend>
 
       <% event.coordinators.each_with_index do |coordinator, i| %>
-        <div class="row">
-          <% if i != 0 %>
-            <hr class="visible-xs-block" />
-          <% end %>
-
-          <div class="<%= coordinator_col_class %>">
-            <div class="form-group">
-              <label for="coordinator-<%= i %>">Coordinator</label>
-              <input type="text" class="form-control" id="coordinator-<%= i %>" name="coordinators[]" placeholder="Coordinator" value="<%= coordinator.name %>" />
-            </div>
-          </div>
-
-          <div class="<%= coordinator_col_class %>">
-            <div class="form-group">
-              <label for="coordinator_twitter-<%= i %>"><span class="visible-xs-inline">Coordinator </span>Twitter</label>
-
-              <div class="input-group">
-                <span class="input-group-addon" id="twitter_coordinator_at-<%= i %>">@</span>
-                <input type="text" class="form-control" id="coordinator_twitter-<%= i %>" name="coordinator_twitters[]" placeholder="Coordinator" aria-describedby="twitter_coordinator_at-<%= i %>" data-guard="twitter" value="<%= coordinator.twitter %>" />
-              </div>
-            </div>
-          </div>
-
-          <% if active_user.can_specify_user_coordinators? %>
-            <div class="<%= coordinator_col_class %>">
-              <div class="form-group">
-                <label for="coordinator_github-<%= i %>"><span class="visible-xs-inline">Coordinator </span>GitHub</label>
-
-                <div class="input-group">
-                  <span class="input-group-addon" id="github_coordinator_at-<%= i %>">@</span>
-                  <input type="text" class="form-control" id="coordinator_github-<%= i %>" name="coordinator_githubs[]" placeholder="Coordinator" aria-describedby="github_coordinator_at-<%= i %>" data-guard="github" value="<%= coordinator.github_username %>" />
-                </div>
-              </div>
-            </div>
-          <% end %>
-        </div>
+        <%= render coordinator, index: i %>
       <% end %>
 
-      <div class="row new-coordinator">
-        <% if event.coordinators.present? %>
-          <hr class="visible-xs-block" />
-        <% end %>
-
-        <div class="<%= coordinator_col_class %>">
-          <div class="form-group">
-            <label for="coordinator-new">Coordinator</label>
-            <input type="text" class="form-control" id="coordinator-new" name="coordinators[]" placeholder="Coordinator" />
-          </div>
-        </div>
-
-        <div class="<%= coordinator_col_class %>">
-          <div class="form-group">
-            <label for="coordinator_twitter-new"><span class="visible-xs-inline">Coordinator </span>Twitter</label>
-
-            <div class="input-group">
-              <span class="input-group-addon" id="twitter_coordinator_at-new">@</span>
-              <input type="text" class="form-control" id="coordinator_twitter-new" name="coordinator_twitters[]" placeholder="Coordinator" aria-describedby="twitter_coordinator_at-new" data-guard="twitter" />
-            </div>
-          </div>
-        </div>
-
-        <% if active_user.can_specify_user_coordinators? %>
-          <div class="<%= coordinator_col_class %>">
-            <div class="form-group">
-              <label for="coordinator_github-new"><span class="visible-xs-inline">Coordinator </span>GitHub</label>
-
-              <div class="input-group">
-                <span class="input-group-addon" id="github_coordinator_at-new">@</span>
-                <input type="text" class="form-control" id="coordinator_github-new" name="coordinator_githubs[]" placeholder="Coordinator" aria-describedby="github_coordinator_at-new" data-guard="github" />
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
+      <%= render Coordinator.new, index: event.coordinators.size %>
 
       <script type="text/x-tmpl" id="new-coordinator-template">
-        <div class="row new-coordinator">
-          <hr class="visible-xs-block" />
-
-          <div class="<%= coordinator_col_class %>">
-            <div class="form-group">
-              <label for="coordinator-new-{%= o.rowSize %}">Coordinator</label>
-              <input type="text" class="form-control" id="coordinator-new-{%= o.rowSize %}" name="coordinators[]" placeholder="Coordinator" />
-            </div>
-          </div>
-
-          <div class="<%= coordinator_col_class %>">
-            <div class="form-group">
-              <label for="coordinator_twitter-new-{%= o.rowSize %}"><span class="visible-xs-inline">Coordinator </span>Twitter</label>
-
-              <div class="input-group">
-                <span class="input-group-addon" id="twitter_coordinator_at-new-{%= o.rowSize %}">@</span>
-                <input type="text" class="form-control" id="coordinator_twitter-new-{%= o.rowSize %}" name="coordinator_twitters[]" placeholder="Coordinator" aria-describedby="twitter_coordinator_at-new-{%= o.rowSize %}" data-guard="twitter" />
-              </div>
-            </div>
-          </div>
-
-          <% if active_user.can_specify_user_coordinators? %>
-            <div class="<%= coordinator_col_class %>">
-              <div class="form-group">
-                <label for="coordinator_github-new-{%= o.rowSize %}"><span class="visible-xs-inline">Coordinator </span>GitHub</label>
-
-                <div class="input-group">
-                  <span class="input-group-addon" id="github_coordinator_at-new-{%= o.rowSize %}">@</span>
-                  <input type="text" class="form-control" id="coordinator_github-new-{%= o.rowSize %}" name="coordinator_githubs[]" placeholder="Coordinator" aria-describedby="github_coordinator_at-new-{%= o.rowSize %}" data-guard="github" />
-                </div>
-              </div>
-            </div>
-          <% end %>
-        </div>
+        <%= render Coordinator.new, index: "{%= o.rowSize %}" %>
       </script>
     </fieldset>
 

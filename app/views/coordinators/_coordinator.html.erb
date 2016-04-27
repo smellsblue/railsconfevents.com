@@ -1,0 +1,36 @@
+<div class="row row-coordinator">
+  <% if index != 0 %>
+    <hr class="visible-xs-block" />
+  <% end %>
+
+  <div class="<%= coordinator_col_class %>">
+    <div class="form-group">
+      <label for="coordinator-<%= index %>">Coordinator</label>
+      <input type="text" class="form-control" id="coordinator-<%= index %>" name="coordinators[]" placeholder="Coordinator" value="<%= coordinator.name %>" />
+    </div>
+  </div>
+
+  <div class="<%= coordinator_col_class %>">
+    <div class="form-group">
+      <label for="coordinator_twitter-<%= index %>"><span class="visible-xs-inline">Coordinator </span>Twitter</label>
+
+      <div class="input-group">
+        <span class="input-group-addon" id="twitter_coordinator_at-<%= index %>">@</span>
+        <input type="text" class="form-control" id="coordinator_twitter-<%= index %>" name="coordinator_twitters[]" placeholder="Coordinator" aria-describedby="twitter_coordinator_at-<%= index %>" data-guard="twitter" value="<%= coordinator.twitter %>" />
+      </div>
+    </div>
+  </div>
+
+  <% if active_user.can_specify_user_coordinators? %>
+    <div class="<%= coordinator_col_class %>">
+      <div class="form-group">
+        <label for="coordinator_github-<%= index %>"><span class="visible-xs-inline">Coordinator </span>GitHub</label>
+
+        <div class="input-group">
+          <span class="input-group-addon" id="github_coordinator_at-<%= index %>">@</span>
+          <input type="text" class="form-control" id="coordinator_github-<%= index %>" name="coordinator_githubs[]" placeholder="Coordinator" aria-describedby="github_coordinator_at-<%= index %>" data-guard="github" value="<%= coordinator.github_username %>" />
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
