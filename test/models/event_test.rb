@@ -56,14 +56,23 @@ class EventTest < ActiveSupport::TestCase
     assert_equal [users(:fry)], event.coordinators.map(&:user)
   end
 
-  def test_create_event_with_invalid_user
+  def test_create_event_with_non_user_github_user
     event = users(:fry).create_event!({ name: "An event",
                                         date: "4/22/#{current_year}",
-                                        coordinator_githubs: ["invalid"],
+                                        coordinator_githubs: ["nonuser"],
                                         start_time: "7:00 pm",
                                         end_time: "8:00 pm" }, "127.0.0.1")
     event.reload
-    assert event.coordinators.empty?
+    assert_equal [nil], event.coordinators.map(&:user)
+    assert_equal ["nonuser"], event.coordinators.map(&:username)
+    new_user = User.create! provider: "github",
+                            uid: "nonuser",
+                            name: "Non User",
+                            username: "nonuser",
+                            email: "nonuser@fake.com"
+    event.reload
+    assert_equal [new_user], event.coordinators.map(&:user)
+    assert_equal [nil], event.coordinators.map(&:username)
   end
 
   def test_create_event_with_another_user_as_coordinator
