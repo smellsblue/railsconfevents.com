@@ -16,13 +16,24 @@
 
 <% unless event.coordinators.empty? %>
   <p>
-    <strong>Coordinator:</strong>
-    <% if event.coordinators.first.name.present? && event.coordinators.first.twitter.present? %>
-      <a href="https://twitter.com/<%= event.coordinators.first.twitter %>"><%= event.coordinators.first.name %></a>
-    <% elsif event.coordinators.first.twitter.present? %>
-      <a href="https://twitter.com/<%= event.coordinators.first.twitter %>">@<%= event.coordinators.first.twitter %></a>
-    <% else %>
-      <%= event.coordinators.first.name %>
+    <strong><%= "Coordinator".pluralize(event.coordinators.size) %>:</strong>
+    <% event.coordinators.each_with_index do |coordinator, i| %>
+      <% comma = "," if i < event.coordinators.size - 1 %>
+
+      <% if coordinator.user %>
+        <%= user_avatar coordinator.user %>
+        <%= user_github_link coordinator.user %><%= comma %>
+      <% elsif coordinator.name.present? && coordinator.twitter.present? %>
+        <%= link_to coordinator.name, coordinator.twitter_path %><%= comma %>
+      <% elsif coordinator.twitter.present? %>
+        <%= link_to coordinator.twitter, coordinator.twitter_path %><%= comma %>
+      <% elsif coordinator.name.present? && coordinator.username.present? %>
+        <%= link_to coordinator.name, coordinator.github_path %><%= comma %>
+      <% elsif coordinator.username.present? %>
+        <%= link_to coordinator.username, coordinator.github_path %><%= comma %>
+      <% else %>
+        <%= coordinator.name %><%= comma %>
+      <% end %>
     <% end %>
   </p>
 <% end %>

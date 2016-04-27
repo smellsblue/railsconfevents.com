@@ -21,6 +21,18 @@ class Coordinator < ActiveRecord::Base
     end
   end
 
+  def twitter_path
+    if twitter.present?
+      "https://twitter.com/#{twitter}"
+    end
+  end
+
+  def github_path
+    if github_username.present?
+      "https://github.com/#{github_username}"
+    end
+  end
+
   private
 
   def update_user_from_username

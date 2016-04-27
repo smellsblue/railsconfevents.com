@@ -54,11 +54,7 @@ module ApplicationHelper
       label = user.display_name
     end
 
-    if user.github_path.present?
-      link_to label, user.github_path
-    else
-      label
-    end
+    link_to_if user.github_path.present?, label, user.github_path
   end
 
   def users_active?
