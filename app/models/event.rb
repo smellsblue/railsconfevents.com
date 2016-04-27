@@ -7,6 +7,11 @@ class Event < ActiveRecord::Base
   validates :name, presence: true
   validate :date_within_conference_allowed_dates
 
+  def coordinator?(user)
+    return false unless user
+    coordinators.map(&:user).include?(user)
+  end
+
   def current?
     time_state == :current
   end

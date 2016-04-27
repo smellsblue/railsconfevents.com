@@ -109,6 +109,28 @@ class EventTest < ActiveSupport::TestCase
     assert_equal "127.0.0.1", event.anonymous_user_ip, "Anonymous ip is stored when creating an event"
   end
 
+  def test_create_event_as_anonymous_with_multiple_non_user_coordinators
+    event = Anonymous.user.create_event!({ name: "An event",
+                                           date: "4/22/#{current_year}",
+                                           coordinators: ["John Doe", ""],
+                                           coordinator_twitters: ["", "joandoe"],
+                                           start_time: "7:00 pm",
+                                           end_time: "8:00 pm" }, "127.0.0.1")
+    event.reload
+    assert_equal ["John Doe", ""], event.coordinators.map(&:name)
+    assert_equal ["", "joandoe"], event.coordinators.map(&:twitter)
+  end
+
+  def test_create_event_as_anonymous_cannot_assign_coordinator_as_user
+    assert_raises PermissionError do
+      Anonymous.user.create_event!({ name: "An event",
+                                     date: "4/22/#{current_year}",
+                                     coordinator_githubs: [users(:fry).username],
+                                     start_time: "7:00 pm",
+                                     end_time: "8:00 pm" }, "127.0.0.1")
+    end
+  end
+
   def test_create_with_invalid_date
     assert_raises ActiveRecord::RecordInvalid do
       users(:fry).create_event!({ name: "An event",
@@ -161,6 +183,15 @@ class EventTest < ActiveSupport::TestCase
     users(:fry).edit_event! edit_event_params(event, description: "TV night, woohoo!")
     event.reload
     assert event.listed?, "Owner edited events are listed"
+    assert_equal "TV night, woohoo!", event.description
+  end
+
+  def test_edit_event_as_coordinator
+    event = events :tv_night
+    event.coordinators.create! user: users(:leela)
+    users(:leela).edit_event! edit_event_params(event, description: "TV night, woohoo!")
+    event.reload
+    assert event.listed?, "Coordinator edited events are listed"
     assert_equal "TV night, woohoo!", event.description
   end
 
@@ -232,10 +263,15 @@ class EventTest < ActiveSupport::TestCase
   private
 
   def edit_event_params(event, new_params)
+    coordinators = event.coordinators.reject(&:user?).map(&:name)
+    coordinator_twitters = event.coordinators.reject(&:user?).map(&:twitter)
+    coordinator_githubs = event.coordinators.select(&:user?).map(&:github_username)
+
     { id: event.id,
       name: event.name,
-      coordinators: ([event.coordinators.first.name] unless event.coordinators.empty?),
-      coordinator_twitters: ([event.coordinators.first.twitter] unless event.coordinators.empty?),
+      coordinators: coordinators,
+      coordinator_twitters: coordinator_twitters,
+      coordinator_githubs: coordinator_githubs,
       url: event.url,
       location: event.location,
       description: event.description,

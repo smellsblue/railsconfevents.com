@@ -6,7 +6,7 @@ module EventCreator
   end
 
   def can_edit?(event)
-    admin? || event.creator == self
+    admin? || event.creator == self || event.coordinator?(self)
   end
 
   def can_list?(event)
@@ -83,6 +83,7 @@ module EventCreator
           event.anonymous_user_ip = ip
           event.listed = false
           event.fill params
+          raise PermissionError.new if event.coordinators.any?(&:user?)
         end
       end
     end
