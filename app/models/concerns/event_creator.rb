@@ -43,10 +43,12 @@ module EventCreator
   end
 
   def edit_event!(params)
-    event = Event.find params[:id]
-    raise PermissionError.new unless can_edit? event
-    event.fill params
-    event.save!
+    transaction do
+      event = Event.find params[:id]
+      raise PermissionError.new unless can_edit? event
+      event.fill params
+      event.save!
+    end
   end
 
   def list_event!(params)
@@ -76,10 +78,12 @@ module EventCreator
     end
 
     def create_event!(params, ip)
-      Conference.current.events.create! do |event|
-        event.anonymous_user_ip = ip
-        event.listed = false
-        event.fill params
+      transaction do
+        Conference.current.events.create! do |event|
+          event.anonymous_user_ip = ip
+          event.listed = false
+          event.fill params
+        end
       end
     end
 

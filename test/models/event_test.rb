@@ -49,7 +49,7 @@ class EventTest < ActiveSupport::TestCase
   def test_create_event_with_self_as_coordinator
     event = users(:fry).create_event!({ name: "An event",
                                         date: "4/22/#{current_year}",
-                                        coordinator_githubs: [users(:fry).username.to_s],
+                                        coordinator_githubs: [users(:fry).username],
                                         start_time: "7:00 pm",
                                         end_time: "8:00 pm" }, "127.0.0.1")
     event.reload
@@ -64,6 +64,27 @@ class EventTest < ActiveSupport::TestCase
                                         end_time: "8:00 pm" }, "127.0.0.1")
     event.reload
     assert event.coordinators.empty?
+  end
+
+  def test_create_event_with_another_user_as_coordinator
+    event = users(:fry).create_event!({ name: "An event",
+                                        date: "4/22/#{current_year}",
+                                        coordinator_githubs: [users(:farnsworth).username],
+                                        start_time: "7:00 pm",
+                                        end_time: "8:00 pm" }, "127.0.0.1")
+    event.reload
+    assert_equal [users(:farnsworth)], event.coordinators.map(&:user)
+  end
+
+  def test_create_event_with_multiple_user_coordinators
+    event = users(:fry).create_event!({ name: "An event",
+                                        date: "4/22/#{current_year}",
+                                        coordinator_githubs: [users(:fry).username,
+                                                              users(:farnsworth).username],
+                                        start_time: "7:00 pm",
+                                        end_time: "8:00 pm" }, "127.0.0.1")
+    event.reload
+    assert_equal [users(:fry), users(:farnsworth)], event.coordinators.map(&:user)
   end
 
   def test_create_event_as_anonymous
