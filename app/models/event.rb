@@ -93,6 +93,7 @@ class Event < ActiveRecord::Base
     params[:coordinator_githubs].to_a.each do |github|
       user = User.find_by_username(github)
       next unless user
+      next if coordinators.map(&:user).include?(user)
       coordinators.build user: user
     end
 

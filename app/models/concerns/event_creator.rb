@@ -78,7 +78,7 @@ module EventCreator
     end
 
     def create_event!(params, ip)
-      transaction do
+      Event.transaction do
         Conference.current.events.create! do |event|
           event.anonymous_user_ip = ip
           event.listed = false

@@ -87,6 +87,17 @@ class EventTest < ActiveSupport::TestCase
     assert_equal [users(:fry), users(:farnsworth)], event.coordinators.map(&:user)
   end
 
+  def test_create_event_duplicate_user_coordinators
+    event = users(:fry).create_event!({ name: "An event",
+                                        date: "4/22/#{current_year}",
+                                        coordinator_githubs: [users(:farnsworth).username,
+                                                              users(:farnsworth).username],
+                                        start_time: "7:00 pm",
+                                        end_time: "8:00 pm" }, "127.0.0.1")
+    event.reload
+    assert_equal [users(:farnsworth)], event.coordinators.map(&:user)
+  end
+
   def test_create_event_as_anonymous
     event = Anonymous.user.create_event!({ name: "An event",
                                            date: "4/22/#{current_year}",
