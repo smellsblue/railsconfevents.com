@@ -243,6 +243,16 @@ class EventTest < ActiveSupport::TestCase
     assert_equal "TV night, woohoo!", event.description
   end
 
+  def test_edit_event_coordinator_doesnt_create_new_coordinators
+    event = events :tv_night
+    event.coordinators.create! name: "Fry", twitter: "fry"
+    params = edit_event_params(event, {})
+    params[:coordinator_githubs][0] = users(:fry).username
+    users(:fry).edit_event! params
+    event.reload
+    assert_equal [users(:fry)], event.coordinators.map(&:user)
+  end
+
   def test_edit_event_as_non_user_github_user_that_just_signed_up
     event = events :tv_night
     event.coordinators.create! username: "nonuser"
