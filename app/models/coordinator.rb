@@ -1,7 +1,8 @@
 class Coordinator < ActiveRecord::Base
   belongs_to :event
   belongs_to :user
-  validates_format_of :twitter, :with => /\A[a-zA-Z0-9_]{0,15}\z/
+  validates :twitter, twitter: true
+  validates :username, github: true
   after_find :update_user_from_username
 
   def matches?(name, twitter, github)

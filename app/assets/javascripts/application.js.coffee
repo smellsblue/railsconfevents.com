@@ -7,3 +7,4 @@
 #= require local_time
 #= require twitter/bootstrap/rails/confirm
 #= require turbolinks
+#= require events

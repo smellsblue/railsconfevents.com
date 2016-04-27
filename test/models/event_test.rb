@@ -135,7 +135,6 @@ class EventTest < ActiveSupport::TestCase
                                            date: "4/22/#{current_year}",
                                            coordinators: ["John Doe", ""],
                                            coordinator_twitters: ["", "joandoe"],
-                                           coordinator_githubs: ["", ""],
                                            start_time: "7:00 pm",
                                            end_time: "8:00 pm" }, "127.0.0.1")
     event.reload
@@ -164,6 +163,80 @@ class EventTest < ActiveSupport::TestCase
                                      coordinator_githubs: ["nonuser"],
                                      start_time: "7:00 pm",
                                      end_time: "8:00 pm" }, "127.0.0.1")
+    end
+  end
+
+  def test_create_with_invalid_twitter
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).create_event!({ name: "An event",
+                                  date: "4/22/#{current_year}",
+                                  coordinators: [""],
+                                  coordinator_twitters: ["$$#^*&#"],
+                                  coordinator_githubs: [""],
+                                  start_time: "7:00 pm",
+                                  end_time: "8:00 pm" }, "127.0.0.1")
+    end
+
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).create_event!({ name: "An event",
+                                  date: "4/22/#{current_year}",
+                                  coordinators: [""],
+                                  coordinator_twitters: ["too_long_0123456"],
+                                  coordinator_githubs: [""],
+                                  start_time: "7:00 pm",
+                                  end_time: "8:00 pm" }, "127.0.0.1")
+    end
+  end
+
+  def test_create_with_invalid_github
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).create_event!({ name: "An event",
+                                  date: "4/22/#{current_year}",
+                                  coordinators: [""],
+                                  coordinator_twitters: [""],
+                                  coordinator_githubs: ["$$#^*&#"],
+                                  start_time: "7:00 pm",
+                                  end_time: "8:00 pm" }, "127.0.0.1")
+    end
+
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).create_event!({ name: "An event",
+                                  date: "4/22/#{current_year}",
+                                  coordinators: [""],
+                                  coordinator_twitters: [""],
+                                  coordinator_githubs: ["-invalid"],
+                                  start_time: "7:00 pm",
+                                  end_time: "8:00 pm" }, "127.0.0.1")
+    end
+
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).create_event!({ name: "An event",
+                                  date: "4/22/#{current_year}",
+                                  coordinators: [""],
+                                  coordinator_twitters: [""],
+                                  coordinator_githubs: ["invalid-"],
+                                  start_time: "7:00 pm",
+                                  end_time: "8:00 pm" }, "127.0.0.1")
+    end
+
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).create_event!({ name: "An event",
+                                  date: "4/22/#{current_year}",
+                                  coordinators: [""],
+                                  coordinator_twitters: [""],
+                                  coordinator_githubs: ["in--valid"],
+                                  start_time: "7:00 pm",
+                                  end_time: "8:00 pm" }, "127.0.0.1")
+    end
+
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).create_event!({ name: "An event",
+                                  date: "4/22/#{current_year}",
+                                  coordinators: [""],
+                                  coordinator_twitters: ["too_long_0123456789012345678901234567890"],
+                                  coordinator_githubs: [""],
+                                  start_time: "7:00 pm",
+                                  end_time: "8:00 pm" }, "127.0.0.1")
     end
   end
 

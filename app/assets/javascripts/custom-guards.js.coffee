@@ -27,3 +27,18 @@ $.guards.name("twitter").message("Invalid Twitter handle.").using (value, elemen
         return true
 
     /^[a-zA-Z0-9_]{1,15}$/.test value
+
+$.guards.name("github").message("Invalid GitHub handle.").using (value, element) ->
+    if value == ""
+        return true
+
+    if /--/.test(value)
+        return false
+
+    if /^-/.test(value)
+        return false
+
+    if /-$/.test(value)
+        return false
+
+    /^[a-zA-Z0-9-]{1,39}$/.test value

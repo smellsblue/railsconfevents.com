@@ -13,6 +13,10 @@ module EventCreator
     admin?
   end
 
+  def can_specify_user_coordinators?
+    true
+  end
+
   def comment_on_event!(params)
     event = Event.find params[:event_id]
 
@@ -70,6 +74,10 @@ module EventCreator
     end
 
     def can_list?(event)
+      false
+    end
+
+    def can_specify_user_coordinators?
       false
     end
 

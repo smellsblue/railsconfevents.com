@@ -38,6 +38,16 @@ body {
     margin-bottom: $footer-height;
 }
 
+fieldset.well {
+    background-color: $body-bg;
+
+    legend {
+        border: none;
+        margin-bottom: 0;
+        width: auto;
+    }
+}
+
 .navbar {
     margin-bottom: 20px;
 
