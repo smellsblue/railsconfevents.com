@@ -9,7 +9,7 @@ class Coordinator < ActiveRecord::Base
   end
 
   def user?
-    user.present?
+    user.present? || username.present?
   end
 
   def github_username

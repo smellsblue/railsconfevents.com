@@ -155,6 +155,18 @@ class EventTest < ActiveSupport::TestCase
     end
   end
 
+  def test_create_event_as_anonymous_cannot_assign_coodinator_as_non_user_github_user
+    assert_raises PermissionError do
+      Anonymous.user.create_event!({ name: "An event",
+                                     date: "4/22/#{current_year}",
+                                     coordinators: [""],
+                                     coordinator_twitters: [""],
+                                     coordinator_githubs: ["nonuser"],
+                                     start_time: "7:00 pm",
+                                     end_time: "8:00 pm" }, "127.0.0.1")
+    end
+  end
+
   def test_create_with_invalid_date
     assert_raises ActiveRecord::RecordInvalid do
       users(:fry).create_event!({ name: "An event",
@@ -169,6 +181,18 @@ class EventTest < ActiveSupport::TestCase
                                   start_time: "7:00 pm",
                                   end_time: "8:00 pm" }, "127.0.0.1")
     end
+  end
+
+  def test_event_with_non_user_github_user_that_becomes_user_is_associated_with_user
+    event = events :tv_night
+    event.coordinators.create! username: "nonuser"
+    new_user = User.create! provider: "github",
+                            uid: "nonuser",
+                            name: "Non User",
+                            username: "nonuser",
+                            email: "nonuser@fake.com"
+    event.reload
+    assert event.coordinator?(new_user)
   end
 
   def test_delete_event_as_admin_user
@@ -214,6 +238,20 @@ class EventTest < ActiveSupport::TestCase
     event = events :tv_night
     event.coordinators.create! user: users(:leela)
     users(:leela).edit_event! edit_event_params(event, description: "TV night, woohoo!")
+    event.reload
+    assert event.listed?, "Coordinator edited events are listed"
+    assert_equal "TV night, woohoo!", event.description
+  end
+
+  def test_edit_event_as_non_user_github_user_that_just_signed_up
+    event = events :tv_night
+    event.coordinators.create! username: "nonuser"
+    new_user = User.create! provider: "github",
+                            uid: "nonuser",
+                            name: "Non User",
+                            username: "nonuser",
+                            email: "nonuser@fake.com"
+    new_user.edit_event! edit_event_params(event, description: "TV night, woohoo!")
     event.reload
     assert event.listed?, "Coordinator edited events are listed"
     assert_equal "TV night, woohoo!", event.description
