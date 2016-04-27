@@ -28,6 +28,7 @@ class EventTest < ActiveSupport::TestCase
                                         date: "4/22/#{current_year}",
                                         coordinators: ["John Doe", ""],
                                         coordinator_twitters: ["", "joandoe"],
+                                        coordinator_githubs: ["", ""],
                                         start_time: "7:00 pm",
                                         end_time: "8:00 pm" }, "127.0.0.1")
     event.reload
@@ -40,6 +41,7 @@ class EventTest < ActiveSupport::TestCase
                                         date: "4/22/#{current_year}",
                                         coordinators: ["", ""],
                                         coordinator_twitters: ["", ""],
+                                        coordinator_githubs: ["", ""],
                                         start_time: "7:00 pm",
                                         end_time: "8:00 pm" }, "127.0.0.1")
     event.reload
@@ -49,6 +51,8 @@ class EventTest < ActiveSupport::TestCase
   def test_create_event_with_self_as_coordinator
     event = users(:fry).create_event!({ name: "An event",
                                         date: "4/22/#{current_year}",
+                                        coordinators: [""],
+                                        coordinator_twitters: [""],
                                         coordinator_githubs: [users(:fry).username],
                                         start_time: "7:00 pm",
                                         end_time: "8:00 pm" }, "127.0.0.1")
@@ -59,6 +63,8 @@ class EventTest < ActiveSupport::TestCase
   def test_create_event_with_non_user_github_user
     event = users(:fry).create_event!({ name: "An event",
                                         date: "4/22/#{current_year}",
+                                        coordinators: [""],
+                                        coordinator_twitters: [""],
                                         coordinator_githubs: ["nonuser"],
                                         start_time: "7:00 pm",
                                         end_time: "8:00 pm" }, "127.0.0.1")
@@ -78,6 +84,8 @@ class EventTest < ActiveSupport::TestCase
   def test_create_event_with_another_user_as_coordinator
     event = users(:fry).create_event!({ name: "An event",
                                         date: "4/22/#{current_year}",
+                                        coordinators: [""],
+                                        coordinator_twitters: [""],
                                         coordinator_githubs: [users(:farnsworth).username],
                                         start_time: "7:00 pm",
                                         end_time: "8:00 pm" }, "127.0.0.1")
@@ -88,6 +96,8 @@ class EventTest < ActiveSupport::TestCase
   def test_create_event_with_multiple_user_coordinators
     event = users(:fry).create_event!({ name: "An event",
                                         date: "4/22/#{current_year}",
+                                        coordinators: ["", ""],
+                                        coordinator_twitters: ["", ""],
                                         coordinator_githubs: [users(:fry).username,
                                                               users(:farnsworth).username],
                                         start_time: "7:00 pm",
@@ -99,6 +109,8 @@ class EventTest < ActiveSupport::TestCase
   def test_create_event_duplicate_user_coordinators
     event = users(:fry).create_event!({ name: "An event",
                                         date: "4/22/#{current_year}",
+                                        coordinators: ["", ""],
+                                        coordinator_twitters: ["", ""],
                                         coordinator_githubs: [users(:farnsworth).username,
                                                               users(:farnsworth).username],
                                         start_time: "7:00 pm",
@@ -123,6 +135,7 @@ class EventTest < ActiveSupport::TestCase
                                            date: "4/22/#{current_year}",
                                            coordinators: ["John Doe", ""],
                                            coordinator_twitters: ["", "joandoe"],
+                                           coordinator_githubs: ["", ""],
                                            start_time: "7:00 pm",
                                            end_time: "8:00 pm" }, "127.0.0.1")
     event.reload
@@ -134,6 +147,8 @@ class EventTest < ActiveSupport::TestCase
     assert_raises PermissionError do
       Anonymous.user.create_event!({ name: "An event",
                                      date: "4/22/#{current_year}",
+                                     coordinators: [""],
+                                     coordinator_twitters: [""],
                                      coordinator_githubs: [users(:fry).username],
                                      start_time: "7:00 pm",
                                      end_time: "8:00 pm" }, "127.0.0.1")
@@ -272,15 +287,11 @@ class EventTest < ActiveSupport::TestCase
   private
 
   def edit_event_params(event, new_params)
-    coordinators = event.coordinators.reject(&:user?).map(&:name)
-    coordinator_twitters = event.coordinators.reject(&:user?).map(&:twitter)
-    coordinator_githubs = event.coordinators.select(&:user?).map(&:github_username)
-
     { id: event.id,
       name: event.name,
-      coordinators: coordinators,
-      coordinator_twitters: coordinator_twitters,
-      coordinator_githubs: coordinator_githubs,
+      coordinators: event.coordinators.map(&:name),
+      coordinator_twitters: event.coordinators.map(&:twitter),
+      coordinator_githubs: event.coordinators.map(&:github_username),
       url: event.url,
       location: event.location,
       description: event.description,

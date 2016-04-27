@@ -4,13 +4,19 @@ class Coordinator < ActiveRecord::Base
   validates_format_of :twitter, :with => /\A[a-zA-Z0-9_]{0,15}\z/
   after_find :update_user_from_username
 
+  def matches?(name, twitter, github)
+    self.name.to_s == name.to_s && self.twitter.to_s == twitter.to_s && self.github_username.to_s == github
+  end
+
   def user?
     user.present?
   end
 
   def github_username
-    if user?
+    if user
       user.username
+    elsif username.present?
+      username
     end
   end
 
