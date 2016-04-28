@@ -7,6 +7,10 @@ module ApplicationHelper
     @current_conference ||= Conference.current
   end
 
+  def format_date(date)
+    date.strftime "%-m/%-d/%Y"
+  end
+
   def flash_class_for(type)
     case type
     when :alert

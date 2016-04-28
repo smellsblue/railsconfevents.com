@@ -4,6 +4,10 @@ class ConferencesController < ApplicationController
   def index
   end
 
+  def edit
+    @conference = Conference.find params[:id]
+  end
+
   private
 
   def verify_access

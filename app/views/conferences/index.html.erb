@@ -4,6 +4,7 @@
       <th>Start Date</th>
       <th>End Date</th>
       <th>Time Zone</th>
+      <th></th>
     </tr>
   </thead>
 
@@ -13,6 +14,12 @@
         <td><%= conference.starting_at %></td>
         <td><%= conference.ending_at %></td>
         <td><%= conference.timezone %></td>
+
+        <td>
+          <a class="btn btn-default btn-xs" href="<%= edit_conference_path(conference) %>">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+        </td>
       </tr>
     <% end %>
   </tbody>
