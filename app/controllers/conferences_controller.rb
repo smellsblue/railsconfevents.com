@@ -8,6 +8,12 @@ class ConferencesController < ApplicationController
     @conference = Conference.find params[:id]
   end
 
+  def update
+    active_user.edit_conference! params
+    flash[:info] = "The conference has been updated."
+    redirect_to conferences_path
+  end
+
   private
 
   def verify_access

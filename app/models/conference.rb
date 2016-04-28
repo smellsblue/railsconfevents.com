@@ -40,6 +40,15 @@ class Conference < ActiveRecord::Base
     ActiveSupport::TimeZone[timezone]
   end
 
+  def fill(params)
+    self.year = params[:year]
+    self.timezone = params[:timezone]
+    self.starting_at = Date.strptime(params[:start_date], "%m/%d/%Y")
+    self.ending_at = Date.strptime(params[:end_date], "%m/%d/%Y")
+    self.allow_starting_at = Date.strptime(params[:allow_start_date], "%m/%d/%Y")
+    self.allow_ending_at = Date.strptime(params[:allow_end_date], "%m/%d/%Y")
+  end
+
   class << self
     def for_admin
       order(:year, :starting_at)

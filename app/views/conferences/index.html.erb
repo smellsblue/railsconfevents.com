@@ -11,8 +11,8 @@
   <tbody>
     <% Conference.for_admin.each do |conference| %>
       <tr>
-        <td><%= conference.starting_at %></td>
-        <td><%= conference.ending_at %></td>
+        <td><%= format_date conference.starting_at %></td>
+        <td><%= format_date conference.ending_at %></td>
         <td><%= conference.timezone %></td>
 
         <td>
