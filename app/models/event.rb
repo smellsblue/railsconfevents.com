@@ -39,38 +39,12 @@ class Event < ActiveRecord::Base
     classes.join " "
   end
 
-  def display_end_time
-    ending_at.strftime "%-I:%M %p"
-  end
-
   def display_id
     "event-#{id}"
   end
 
-  def display_start_time
-    starting_at.strftime "%-I:%M %p"
-  end
-
   def displayable_comments
     comments.for_display
-  end
-
-  def edit_date
-    if starting_at
-      starting_at.strftime "%-m/%-d/%Y"
-    end
-  end
-
-  def edit_end_time
-    if ending_at
-      ending_at.strftime "%-I:%M %p"
-    end
-  end
-
-  def edit_start_time
-    if starting_at
-      starting_at.strftime "%-I:%M %p"
-    end
   end
 
   def ending_at

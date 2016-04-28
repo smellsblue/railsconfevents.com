@@ -1,0 +1,75 @@
+<%= form_tag conference_path(@conference), method: :put, data: { guarded: true } do %>
+  <div class="row">
+    <div class="col-sm-8">
+      <div class="form-group">
+        <label for="year">Year</label> <small class="text-muted">(required)</small>
+        <input type="text" class="form-control" id="year" name="year" placeholder="Ex: <%= Date.today.year %>" data-guard="required int" value="<%= @conference.year %>" data-guard-int-min="2000" data-guard-int-max="3000" data-guard-int-message="Please enter a reasonable year." />
+      </div>
+
+      <div class="form-group">
+        <label for="timezone">Time Zone</label> <small class="text-muted">(required)</small>
+        <select class="form-control" id="timezone" name="timezone">
+          <% ActiveSupport::TimeZone.all.sort_by(&:to_s).each do |zone| %>
+            <option value="<%= zone.name %>" <%= "selected" if @conference.zone == zone %>><%= zone.to_s %></option>
+          <% end %>
+        </select>
+      </div>
+
+      <fieldset class="well">
+        <legend>Conference Dates</legend>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="start_date">Start Date</label> <small class="text-muted">(required)</small>
+              <input type="text" class="form-control" id="start_date" name="start_date" placeholder="Ex: <%= format_date Date.today %>" data-guard="required dateUS" value="<%= format_date @conference.starting_at %>" />
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="end_date">End Date</label> <small class="text-muted">(required)</small>
+              <input type="text" class="form-control" id="end_date" name="end_date" placeholder="Ex: <%= format_date Date.today %>" data-guard="required dateUS" value="<%= format_date @conference.ending_at %>" />
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="well">
+        <legend>Allowed Event Dates</legend>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="allow_start_date">Allowed Start Date</label> <small class="text-muted">(required)</small>
+              <input type="text" class="form-control" id="allow_start_date" name="allow_start_date" placeholder="Ex: <%= format_date Date.today %>" data-guard="required dateUS" value="<%= format_date @conference.allow_starting_at %>" />
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="allow_end_date">Allowed End Date</label> <small class="text-muted">(required)</small>
+              <input type="text" class="form-control" id="allow_end_date" name="allow_end_date" placeholder="Ex: <%= format_date Date.today %>" data-guard="required dateUS" value="<%= format_date @conference.allow_ending_at %>" />
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="well">
+        <legend>Header</legend>
+
+        <div class="form-group">
+          <textarea class="form-control" id="header" name="header" placeholder="Header HTML" rows="5"><%= @conference.header %></textarea>
+        </div>
+
+        <button id="header-preview" class="btn btn-default">Preview</button>
+        <hr />
+
+        <div id="header-preview-content">
+        </div>
+      </fieldset>
+
+      <input type="submit" class="btn btn-default" value="Update" />
+    </div>
+  </div>
+<% end %>

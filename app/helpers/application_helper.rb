@@ -7,6 +7,18 @@ module ApplicationHelper
     @current_conference ||= Conference.current
   end
 
+  def format_date(date)
+    if date
+      date.strftime "%-m/%-d/%Y"
+    end
+  end
+
+  def format_time(time)
+    if time
+      time.strftime "%-I:%M %p"
+    end
+  end
+
   def flash_class_for(type)
     case type
     when :alert
@@ -55,6 +67,10 @@ module ApplicationHelper
     end
 
     link_to_if user.github_path.present?, label, user.github_path
+  end
+
+  def conferences_active?
+    params[:controller] == "conferences"
   end
 
   def users_active?

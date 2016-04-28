@@ -16,10 +16,6 @@ class Conference < ActiveRecord::Base
     end
   end
 
-  def example_event_date
-    (starting_at + 1.day).strftime "%-m/%-d/%Y"
-  end
-
   def iso_valid_end_date
     allow_ending_at.strftime "%Y-%m-%d"
   end
@@ -44,7 +40,21 @@ class Conference < ActiveRecord::Base
     ActiveSupport::TimeZone[timezone]
   end
 
+  def fill(params)
+    self.year = params[:year]
+    self.timezone = params[:timezone]
+    self.starting_at = Date.strptime(params[:start_date], "%m/%d/%Y")
+    self.ending_at = Date.strptime(params[:end_date], "%m/%d/%Y")
+    self.allow_starting_at = Date.strptime(params[:allow_start_date], "%m/%d/%Y")
+    self.allow_ending_at = Date.strptime(params[:allow_end_date], "%m/%d/%Y")
+    self.header = params[:header]
+  end
+
   class << self
+    def for_admin
+      order(:year, :starting_at)
+    end
+
     def current
       where(year: Time.now.year).first
     end

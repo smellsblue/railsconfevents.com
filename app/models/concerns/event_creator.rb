@@ -38,7 +38,7 @@ module EventCreator
 
   def destroy_event!(params)
     event = Event.find params[:id]
-    raise PermissionError.new unless can_delete? event
+    raise PermissionError unless can_delete? event
     return if event.deleted?
     event.deleted = true
     event.deleted_by = self
@@ -49,7 +49,7 @@ module EventCreator
   def edit_event!(params)
     transaction do
       event = Event.find params[:id]
-      raise PermissionError.new unless can_edit? event
+      raise PermissionError unless can_edit? event
       event.fill params
       event.save!
     end
@@ -82,7 +82,7 @@ module EventCreator
     end
 
     def comment_on_event!(params)
-      raise PermissionError.new
+      raise PermissionError
     end
 
     def create_event!(params, ip)
@@ -91,21 +91,21 @@ module EventCreator
           event.anonymous_user_ip = ip
           event.listed = false
           event.fill params
-          raise PermissionError.new if event.coordinators.any?(&:user?)
+          raise PermissionError if event.coordinators.any?(&:user?)
         end
       end
     end
 
     def destroy_event!(params)
-      raise PermissionError.new
+      raise PermissionError
     end
 
     def edit_event!(params)
-      raise PermissionError.new
+      raise PermissionError
     end
 
     def list_event!(params)
-      raise PermissionError.new
+      raise PermissionError
     end
   end
 end

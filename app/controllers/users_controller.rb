@@ -10,18 +10,18 @@ class UsersController < ApplicationController
   def promote
     active_user.promote_user! params
     flash[:error] = "You promoted a user!"
-    redirect_to action: :index
+    redirect_to users_path
   end
 
   def update_me
     active_user.update_me! params
     flash[:info] = "Your user information has been updated."
-    redirect_to action: :me
+    redirect_to me_users_path
   end
 
   private
 
   def verify_access
-    raise PermissionError.new unless active_user.super_admin?
+    raise PermissionError unless active_user.can_manipulate_users?
   end
 end

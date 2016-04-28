@@ -69,7 +69,7 @@ module UserInfo
     end
 
     def update_me!(params)
-      raise PermissionError.new
+      raise PermissionError
     end
   end
 end
