@@ -1,1 +1,19 @@
-TODO
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Time Zone</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% Conference.for_admin.each do |conference| %>
+      <tr>
+        <td><%= conference.starting_at %></td>
+        <td><%= conference.ending_at %></td>
+        <td><%= conference.timezone %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

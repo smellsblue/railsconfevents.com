@@ -45,6 +45,10 @@ class Conference < ActiveRecord::Base
   end
 
   class << self
+    def for_admin
+      order(:year, :starting_at)
+    end
+
     def current
       where(year: Time.now.year).first
     end
