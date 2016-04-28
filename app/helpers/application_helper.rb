@@ -57,6 +57,10 @@ module ApplicationHelper
     link_to_if user.github_path.present?, label, user.github_path
   end
 
+  def conferences_active?
+    params[:controller] == "conferences"
+  end
+
   def users_active?
     params[:controller] == "users" && params[:action] != "me"
   end

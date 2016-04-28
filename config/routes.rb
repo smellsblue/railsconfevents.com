@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   root "events#index"
 
+  resources :conferences, only: [:index]
+
   resources :events do
     member do
       post :list
