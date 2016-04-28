@@ -416,8 +416,8 @@ class EventTest < ActiveSupport::TestCase
       url: event.url,
       location: event.location,
       description: event.description,
-      date: event.edit_date,
-      start_time: event.edit_start_time,
-      end_time: event.edit_end_time }.merge(new_params)
+      date: format_date(event.starting_at),
+      start_time: format_time(event.starting_at),
+      end_time: format_time(event.ending_at) }.merge(new_params)
   end
 end

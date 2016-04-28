@@ -8,7 +8,15 @@ module ApplicationHelper
   end
 
   def format_date(date)
-    date.strftime "%-m/%-d/%Y"
+    if date
+      date.strftime "%-m/%-d/%Y"
+    end
+  end
+
+  def format_time(time)
+    if time
+      time.strftime "%-I:%M %p"
+    end
   end
 
   def flash_class_for(type)

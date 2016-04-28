@@ -16,10 +16,6 @@ class Conference < ActiveRecord::Base
     end
   end
 
-  def example_event_date
-    (starting_at + 1.day).strftime "%-m/%-d/%Y"
-  end
-
   def iso_valid_end_date
     allow_ending_at.strftime "%Y-%m-%d"
   end

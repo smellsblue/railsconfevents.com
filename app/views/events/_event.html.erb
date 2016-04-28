@@ -1,6 +1,6 @@
 <p>
   <strong>Time:</strong>
-  <%= event.display_start_time %> - <%= event.display_end_time %>
+  <%= format_time event.starting_at %> - <%= format_time event.ending_at %>
 </p>
 
 <% if event.url.present? %>
