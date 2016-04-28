@@ -8,4 +8,5 @@
 #= require tmpl
 #= require twitter/bootstrap/rails/confirm
 #= require turbolinks
+#= require conferences
 #= require events

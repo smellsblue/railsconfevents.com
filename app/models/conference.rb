@@ -47,6 +47,7 @@ class Conference < ActiveRecord::Base
     self.ending_at = Date.strptime(params[:end_date], "%m/%d/%Y")
     self.allow_starting_at = Date.strptime(params[:allow_start_date], "%m/%d/%Y")
     self.allow_ending_at = Date.strptime(params[:allow_end_date], "%m/%d/%Y")
+    self.header = params[:header]
   end
 
   class << self

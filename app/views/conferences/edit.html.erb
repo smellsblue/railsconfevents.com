@@ -55,6 +55,20 @@
         </div>
       </fieldset>
 
+      <fieldset class="well">
+        <legend>Header</legend>
+
+        <div class="form-group">
+          <textarea class="form-control" id="header" name="header" placeholder="Header HTML" rows="5"><%= @conference.header %></textarea>
+        </div>
+
+        <button id="header-preview" class="btn btn-default">Preview</button>
+        <hr />
+
+        <div id="header-preview-content">
+        </div>
+      </fieldset>
+
       <input type="submit" class="btn btn-default" value="Update" />
     </div>
   </div>
