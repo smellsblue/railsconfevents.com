@@ -7,7 +7,7 @@
 
       <% if active_user.anonymous? %>
         <p>
-          Please <a href="<%= user_omniauth_authorize_path :github %>">sign in or register</a>
+          Please <a href="<%= user_singup_and_login_path %>">sign in or register</a>
           to comment on this event.
         </p>
       <% else %>

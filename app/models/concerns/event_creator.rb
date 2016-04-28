@@ -6,11 +6,15 @@ module EventCreator
   end
 
   def can_edit?(event)
-    admin? || event.creator == self
+    admin? || event.creator == self || event.coordinator?(self)
   end
 
   def can_list?(event)
     admin?
+  end
+
+  def can_specify_user_coordinators?
+    true
   end
 
   def comment_on_event!(params)
@@ -23,10 +27,12 @@ module EventCreator
   end
 
   def create_event!(params, ip)
-    Conference.current.events.create! do |event|
-      event.creator = self
-      event.fill params
-      event.listed = true
+    transaction do
+      Conference.current.events.create! do |event|
+        event.creator = self
+        event.fill params
+        event.listed = true
+      end
     end
   end
 
@@ -41,10 +47,12 @@ module EventCreator
   end
 
   def edit_event!(params)
-    event = Event.find params[:id]
-    raise PermissionError.new unless can_edit? event
-    event.fill params
-    event.save!
+    transaction do
+      event = Event.find params[:id]
+      raise PermissionError.new unless can_edit? event
+      event.fill params
+      event.save!
+    end
   end
 
   def list_event!(params)
@@ -69,15 +77,22 @@ module EventCreator
       false
     end
 
+    def can_specify_user_coordinators?
+      false
+    end
+
     def comment_on_event!(params)
       raise PermissionError.new
     end
 
     def create_event!(params, ip)
-      Conference.current.events.create! do |event|
-        event.anonymous_user_ip = ip
-        event.listed = false
-        event.fill params
+      Event.transaction do
+        Conference.current.events.create! do |event|
+          event.anonymous_user_ip = ip
+          event.listed = false
+          event.fill params
+          raise PermissionError.new if event.coordinators.any?(&:user?)
+        end
       end
     end
 

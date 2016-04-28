@@ -5,5 +5,7 @@
 #= require custom-bootstrap
 #= require custom-guards
 #= require local_time
+#= require tmpl
 #= require twitter/bootstrap/rails/confirm
 #= require turbolinks
+#= require events

@@ -2,10 +2,15 @@ class Event < ActiveRecord::Base
   belongs_to :conference
   belongs_to :creator, foreign_key: "creator_user_id", class_name: "User"
   belongs_to :deleted_by, foreign_key: "deleted_by_user_id", class_name: "User"
+  has_many :coordinators
   has_many :comments
   validates :name, presence: true
-  validates_format_of :coordinator_twitter, :with => /\A[a-zA-Z0-9_]{0,15}\z/
   validate :date_within_conference_allowed_dates
+
+  def coordinator?(user)
+    return false unless user
+    coordinators.map(&:user).include?(user)
+  end
 
   def current?
     time_state == :current
@@ -74,8 +79,7 @@ class Event < ActiveRecord::Base
 
   def fill(params)
     self.name = params[:name]
-    self.coordinator = params[:coordinator]
-    self.coordinator_twitter = params[:coordinator_twitter]
+    fill_coordinators(params)
     self.url = params[:url]
     self.location = params[:location]
     self.description = params[:description]
@@ -84,6 +88,28 @@ class Event < ActiveRecord::Base
 
     if ending_at < starting_at
       self.ending_at += 1.day
+    end
+  end
+
+  def fill_coordinators(params)
+    raise "Invalid coordinators!" unless params[:coordinators].to_a.size == params[:coordinator_twitters].to_a.size
+    raise "Invalid coordinators!" if params[:coordinator_githubs].present? && params[:coordinators].to_a.size != params[:coordinator_githubs].to_a.size
+    coordinators.destroy_all
+    return if params[:coordinators].blank? && params[:coordinator_twitters].blank? && params[:coordinator_githubs].blank?
+
+    params[:coordinators].to_a.each_with_index do |name, i|
+      twitter = params[:coordinator_twitters][i]
+      github = params[:coordinator_githubs][i] if params[:coordinator_githubs].present?
+      next if name.blank? && twitter.blank? && github.blank?
+      user = User.find_by_username(github) if github.present?
+
+      if user
+        next if coordinators.any? { |x| x.user == user }
+        coordinators.build name: name, twitter: twitter, user: user
+      else
+        next if coordinators.any? { |x| x.matches?(name, twitter, github) }
+        coordinators.build name: name, twitter: twitter, username: github
+      end
     end
   end
 

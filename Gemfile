@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 
+gem "blueimp-templates-rails"
 gem "bootstrap-guardsjs-rails"
 gem "bootstrap-sass", "~> 3.3.4"
 gem "coffee-rails", "~> 4.1.0"
@@ -20,11 +21,14 @@ group :production do
   gem "pg"
 end
 
+group :development do
+  gem "web-console", "~> 2.0"
+end
+
 group :development, :test do
   gem "byebug"
   gem "spring"
   gem "sqlite3"
-  gem "web-console", "~> 2.0"
 end
 
 group :test do

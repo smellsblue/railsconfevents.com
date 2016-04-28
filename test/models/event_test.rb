@@ -3,7 +3,7 @@ require "test_helper"
 class EventTest < ActiveSupport::TestCase
   def test_create_event_as_admin_user
     event = users(:farnsworth).create_event!({ name: "An event",
-                                               date: "4/22/2015",
+                                               date: "4/22/#{current_year}",
                                                start_time: "7:00 pm",
                                                end_time: "8:00 pm" }, "127.0.0.1")
     event.reload
@@ -14,7 +14,7 @@ class EventTest < ActiveSupport::TestCase
 
   def test_create_event_as_normal_user
     event = users(:fry).create_event!({ name: "An event",
-                                        date: "4/22/2015",
+                                        date: "4/22/#{current_year}",
                                         start_time: "7:00 pm",
                                         end_time: "8:00 pm" }, "127.0.0.1")
     event.reload
@@ -23,9 +23,105 @@ class EventTest < ActiveSupport::TestCase
     assert_nil event.anonymous_user_ip, "User ip is not stored when creating an event"
   end
 
+  def test_create_event_with_multiple_non_user_coordinators
+    event = users(:fry).create_event!({ name: "An event",
+                                        date: "4/22/#{current_year}",
+                                        coordinators: ["John Doe", ""],
+                                        coordinator_twitters: ["", "joandoe"],
+                                        coordinator_githubs: ["", ""],
+                                        start_time: "7:00 pm",
+                                        end_time: "8:00 pm" }, "127.0.0.1")
+    event.reload
+    assert_equal ["John Doe", ""], event.coordinators.map(&:name)
+    assert_equal ["", "joandoe"], event.coordinators.map(&:twitter)
+  end
+
+  def test_ignore_empty_coordinators
+    event = users(:fry).create_event!({ name: "An event",
+                                        date: "4/22/#{current_year}",
+                                        coordinators: ["", ""],
+                                        coordinator_twitters: ["", ""],
+                                        coordinator_githubs: ["", ""],
+                                        start_time: "7:00 pm",
+                                        end_time: "8:00 pm" }, "127.0.0.1")
+    event.reload
+    assert event.coordinators.empty?
+  end
+
+  def test_create_event_with_self_as_coordinator
+    event = users(:fry).create_event!({ name: "An event",
+                                        date: "4/22/#{current_year}",
+                                        coordinators: [""],
+                                        coordinator_twitters: [""],
+                                        coordinator_githubs: [users(:fry).username],
+                                        start_time: "7:00 pm",
+                                        end_time: "8:00 pm" }, "127.0.0.1")
+    event.reload
+    assert_equal [users(:fry)], event.coordinators.map(&:user)
+  end
+
+  def test_create_event_with_non_user_github_user
+    event = users(:fry).create_event!({ name: "An event",
+                                        date: "4/22/#{current_year}",
+                                        coordinators: [""],
+                                        coordinator_twitters: [""],
+                                        coordinator_githubs: ["nonuser"],
+                                        start_time: "7:00 pm",
+                                        end_time: "8:00 pm" }, "127.0.0.1")
+    event.reload
+    assert_equal [nil], event.coordinators.map(&:user)
+    assert_equal ["nonuser"], event.coordinators.map(&:username)
+    new_user = User.create! provider: "github",
+                            uid: "nonuser",
+                            name: "Non User",
+                            username: "nonuser",
+                            email: "nonuser@fake.com"
+    event.reload
+    assert_equal [new_user], event.coordinators.map(&:user)
+    assert_equal [nil], event.coordinators.map(&:username)
+  end
+
+  def test_create_event_with_another_user_as_coordinator
+    event = users(:fry).create_event!({ name: "An event",
+                                        date: "4/22/#{current_year}",
+                                        coordinators: [""],
+                                        coordinator_twitters: [""],
+                                        coordinator_githubs: [users(:farnsworth).username],
+                                        start_time: "7:00 pm",
+                                        end_time: "8:00 pm" }, "127.0.0.1")
+    event.reload
+    assert_equal [users(:farnsworth)], event.coordinators.map(&:user)
+  end
+
+  def test_create_event_with_multiple_user_coordinators
+    event = users(:fry).create_event!({ name: "An event",
+                                        date: "4/22/#{current_year}",
+                                        coordinators: ["", ""],
+                                        coordinator_twitters: ["", ""],
+                                        coordinator_githubs: [users(:fry).username,
+                                                              users(:farnsworth).username],
+                                        start_time: "7:00 pm",
+                                        end_time: "8:00 pm" }, "127.0.0.1")
+    event.reload
+    assert_equal [users(:fry), users(:farnsworth)], event.coordinators.map(&:user)
+  end
+
+  def test_create_event_duplicate_user_coordinators
+    event = users(:fry).create_event!({ name: "An event",
+                                        date: "4/22/#{current_year}",
+                                        coordinators: ["", ""],
+                                        coordinator_twitters: ["", ""],
+                                        coordinator_githubs: [users(:farnsworth).username,
+                                                              users(:farnsworth).username],
+                                        start_time: "7:00 pm",
+                                        end_time: "8:00 pm" }, "127.0.0.1")
+    event.reload
+    assert_equal [users(:farnsworth)], event.coordinators.map(&:user)
+  end
+
   def test_create_event_as_anonymous
     event = Anonymous.user.create_event!({ name: "An event",
-                                           date: "4/22/2015",
+                                           date: "4/22/#{current_year}",
                                            start_time: "7:00 pm",
                                            end_time: "8:00 pm" }, "127.0.0.1")
     event.reload
@@ -34,20 +130,142 @@ class EventTest < ActiveSupport::TestCase
     assert_equal "127.0.0.1", event.anonymous_user_ip, "Anonymous ip is stored when creating an event"
   end
 
-  def test_create_with_invalid_date
+  def test_create_event_as_anonymous_with_multiple_non_user_coordinators
+    event = Anonymous.user.create_event!({ name: "An event",
+                                           date: "4/22/#{current_year}",
+                                           coordinators: ["John Doe", ""],
+                                           coordinator_twitters: ["", "joandoe"],
+                                           start_time: "7:00 pm",
+                                           end_time: "8:00 pm" }, "127.0.0.1")
+    event.reload
+    assert_equal ["John Doe", ""], event.coordinators.map(&:name)
+    assert_equal ["", "joandoe"], event.coordinators.map(&:twitter)
+  end
+
+  def test_create_event_as_anonymous_cannot_assign_coordinator_as_user
+    assert_raises PermissionError do
+      Anonymous.user.create_event!({ name: "An event",
+                                     date: "4/22/#{current_year}",
+                                     coordinators: [""],
+                                     coordinator_twitters: [""],
+                                     coordinator_githubs: [users(:fry).username],
+                                     start_time: "7:00 pm",
+                                     end_time: "8:00 pm" }, "127.0.0.1")
+    end
+  end
+
+  def test_create_event_as_anonymous_cannot_assign_coodinator_as_non_user_github_user
+    assert_raises PermissionError do
+      Anonymous.user.create_event!({ name: "An event",
+                                     date: "4/22/#{current_year}",
+                                     coordinators: [""],
+                                     coordinator_twitters: [""],
+                                     coordinator_githubs: ["nonuser"],
+                                     start_time: "7:00 pm",
+                                     end_time: "8:00 pm" }, "127.0.0.1")
+    end
+  end
+
+  def test_create_with_invalid_twitter
     assert_raises ActiveRecord::RecordInvalid do
       users(:fry).create_event!({ name: "An event",
-                                  date: "4/17/2015",
+                                  date: "4/22/#{current_year}",
+                                  coordinators: [""],
+                                  coordinator_twitters: ["$$#^*&#"],
+                                  coordinator_githubs: [""],
                                   start_time: "7:00 pm",
                                   end_time: "8:00 pm" }, "127.0.0.1")
     end
 
     assert_raises ActiveRecord::RecordInvalid do
       users(:fry).create_event!({ name: "An event",
-                                  date: "4/27/2015",
+                                  date: "4/22/#{current_year}",
+                                  coordinators: [""],
+                                  coordinator_twitters: ["too_long_0123456"],
+                                  coordinator_githubs: [""],
                                   start_time: "7:00 pm",
                                   end_time: "8:00 pm" }, "127.0.0.1")
     end
+  end
+
+  def test_create_with_invalid_github
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).create_event!({ name: "An event",
+                                  date: "4/22/#{current_year}",
+                                  coordinators: [""],
+                                  coordinator_twitters: [""],
+                                  coordinator_githubs: ["$$#^*&#"],
+                                  start_time: "7:00 pm",
+                                  end_time: "8:00 pm" }, "127.0.0.1")
+    end
+
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).create_event!({ name: "An event",
+                                  date: "4/22/#{current_year}",
+                                  coordinators: [""],
+                                  coordinator_twitters: [""],
+                                  coordinator_githubs: ["-invalid"],
+                                  start_time: "7:00 pm",
+                                  end_time: "8:00 pm" }, "127.0.0.1")
+    end
+
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).create_event!({ name: "An event",
+                                  date: "4/22/#{current_year}",
+                                  coordinators: [""],
+                                  coordinator_twitters: [""],
+                                  coordinator_githubs: ["invalid-"],
+                                  start_time: "7:00 pm",
+                                  end_time: "8:00 pm" }, "127.0.0.1")
+    end
+
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).create_event!({ name: "An event",
+                                  date: "4/22/#{current_year}",
+                                  coordinators: [""],
+                                  coordinator_twitters: [""],
+                                  coordinator_githubs: ["in--valid"],
+                                  start_time: "7:00 pm",
+                                  end_time: "8:00 pm" }, "127.0.0.1")
+    end
+
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).create_event!({ name: "An event",
+                                  date: "4/22/#{current_year}",
+                                  coordinators: [""],
+                                  coordinator_twitters: ["too_long_0123456789012345678901234567890"],
+                                  coordinator_githubs: [""],
+                                  start_time: "7:00 pm",
+                                  end_time: "8:00 pm" }, "127.0.0.1")
+    end
+  end
+
+  def test_create_with_invalid_date
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).create_event!({ name: "An event",
+                                  date: "4/17/#{current_year}",
+                                  start_time: "7:00 pm",
+                                  end_time: "8:00 pm" }, "127.0.0.1")
+    end
+
+    assert_raises ActiveRecord::RecordInvalid do
+      users(:fry).create_event!({ name: "An event",
+                                  date: "4/27/#{current_year}",
+                                  start_time: "7:00 pm",
+                                  end_time: "8:00 pm" }, "127.0.0.1")
+    end
+  end
+
+  def test_event_with_non_user_github_user_that_becomes_user_is_associated_with_user
+    event = events :tv_night
+    event.coordinators.create! username: "nonuser"
+    new_user = User.create! provider: "github",
+                            uid: "nonuser",
+                            name: "Non User",
+                            username: "nonuser",
+                            email: "nonuser@fake.com"
+    event.reload
+    assert event.coordinator?(new_user)
   end
 
   def test_delete_event_as_admin_user
@@ -89,6 +307,39 @@ class EventTest < ActiveSupport::TestCase
     assert_equal "TV night, woohoo!", event.description
   end
 
+  def test_edit_event_as_coordinator
+    event = events :tv_night
+    event.coordinators.create! user: users(:leela)
+    users(:leela).edit_event! edit_event_params(event, description: "TV night, woohoo!")
+    event.reload
+    assert event.listed?, "Coordinator edited events are listed"
+    assert_equal "TV night, woohoo!", event.description
+  end
+
+  def test_edit_event_coordinator_doesnt_create_new_coordinators
+    event = events :tv_night
+    event.coordinators.create! name: "Fry", twitter: "fry"
+    params = edit_event_params(event, {})
+    params[:coordinator_githubs][0] = users(:fry).username
+    users(:fry).edit_event! params
+    event.reload
+    assert_equal [users(:fry)], event.coordinators.map(&:user)
+  end
+
+  def test_edit_event_as_non_user_github_user_that_just_signed_up
+    event = events :tv_night
+    event.coordinators.create! username: "nonuser"
+    new_user = User.create! provider: "github",
+                            uid: "nonuser",
+                            name: "Non User",
+                            username: "nonuser",
+                            email: "nonuser@fake.com"
+    new_user.edit_event! edit_event_params(event, description: "TV night, woohoo!")
+    event.reload
+    assert event.listed?, "Coordinator edited events are listed"
+    assert_equal "TV night, woohoo!", event.description
+  end
+
   def test_edit_event_as_non_owner
     event = events :tv_night
 
@@ -125,11 +376,11 @@ class EventTest < ActiveSupport::TestCase
     event = events :tv_night
 
     assert_raises ActiveRecord::RecordInvalid do
-      users(:fry).edit_event! edit_event_params(event, date: "4/17/2015")
+      users(:fry).edit_event! edit_event_params(event, date: "4/17/#{current_year}")
     end
 
     assert_raises ActiveRecord::RecordInvalid do
-      users(:fry).edit_event! edit_event_params(event, date: "4/27/2015")
+      users(:fry).edit_event! edit_event_params(event, date: "4/27/#{current_year}")
     end
   end
 
@@ -159,8 +410,9 @@ class EventTest < ActiveSupport::TestCase
   def edit_event_params(event, new_params)
     { id: event.id,
       name: event.name,
-      coordinator: event.coordinator,
-      coordinator_twitter: event.coordinator_twitter,
+      coordinators: event.coordinators.map(&:name),
+      coordinator_twitters: event.coordinators.map(&:twitter),
+      coordinator_githubs: event.coordinators.map(&:github_username),
       url: event.url,
       location: event.location,
       description: event.description,

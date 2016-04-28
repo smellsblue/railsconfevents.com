@@ -7,11 +7,11 @@ railsconf2014:
   year: 2014
   timezone: Eastern Time (US & Canada)
 
-railsconf2015:
+railsconf_current:
   creator: farnsworth
-  starting_at: 2015-04-21
-  ending_at: 2015-04-23
-  allow_starting_at: 2015-04-18
-  allow_ending_at: 2015-04-26
-  year: 2015
+  starting_at: <%= current_year %>-04-21
+  ending_at: <%= current_year %>-04-23
+  allow_starting_at: <%= current_year %>-04-18
+  allow_ending_at: <%= current_year %>-04-26
+  year: <%= current_year %>
   timezone: Central Time (US & Canada)
