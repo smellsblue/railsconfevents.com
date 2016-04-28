@@ -6,7 +6,7 @@ module UserManipulator
   end
 
   def promote_user!(params)
-    raise PermissionError.new unless super_admin?
+    raise PermissionError unless super_admin?
     return unless ["admin", "super_admin"].include? params[:role]
     user = User.find params[:id]
     return if user.super_admin?
@@ -22,7 +22,7 @@ module UserManipulator
     end
 
     def promote_user!(params)
-      raise PermissionError.new
+      raise PermissionError
     end
   end
 end

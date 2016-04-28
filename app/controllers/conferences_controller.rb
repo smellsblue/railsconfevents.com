@@ -7,6 +7,6 @@ class ConferencesController < ApplicationController
   private
 
   def verify_access
-    raise PermissionError.new unless active_user.can_manipulate_conferences?
+    raise PermissionError unless active_user.can_manipulate_conferences?
   end
 end

@@ -13,7 +13,7 @@ class EventsController < ApplicationController
 
   def edit
     @event = Event.find params[:id]
-    raise "You cannot edit that!" unless active_user.can_edit? @event
+    raise PermissionError unless active_user.can_edit? @event
   end
 
   def index

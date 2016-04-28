@@ -22,6 +22,6 @@ class UsersController < ApplicationController
   private
 
   def verify_access
-    raise PermissionError.new unless active_user.can_manipulate_users?
+    raise PermissionError unless active_user.can_manipulate_users?
   end
 end
