@@ -10,3 +10,4 @@
 #= require turbolinks
 #= require conferences
 #= require events
+#= require prevent-default

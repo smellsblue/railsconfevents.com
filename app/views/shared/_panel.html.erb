@@ -1,0 +1,15 @@
+<div class="panel panel-default">
+  <div class="panel-heading" role="tab" id="<%= id %>-heading">
+    <h4 class="panel-title">
+      <a role="button" data-toggle="collapse" data-target="#<%= id %>" data-prevent-default="click" href="#<%= id %>" aria-expanded="<%= expanded %>" aria-controls="<%= id %>">
+        <%= title %>
+      </a>
+    </h4>
+  </div>
+
+  <div id="<%= id %>" class="panel-collapse collapse <%= "in" if expanded %>" role="tabpanel" aria-labelledby="<%= id %>-heading">
+    <div class="panel-body">
+      <%= body %>
+    </div>
+  </div>
+</div>
