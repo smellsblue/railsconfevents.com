@@ -22,14 +22,14 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="start_date">Start Date</label> <small class="text-muted">(required)</small>
-              <input type="text" class="form-control" id="start_date" name="start_date" placeholder="Ex: <%= format_date Date.today %>" data-guard="required dateUS" value="<%= format_date @conference.starting_at %>" />
+              <input type="text" class="form-control" id="start_date" name="start_date" placeholder="Ex: <%= format_date Date.today %>" data-guard="required dateUS conferencedate" value="<%= format_date @conference.starting_at %>" data-conferencedate-year="input[name='year']" data-conferencedate-greater-than="input[name='allow_start_date']" data-conferencedate-less-than="input[name='end_date'],input[name='allow_end_date']" data-conferencedate-label="conference start date" />
             </div>
           </div>
 
           <div class="col-sm-6">
             <div class="form-group">
               <label for="end_date">End Date</label> <small class="text-muted">(required)</small>
-              <input type="text" class="form-control" id="end_date" name="end_date" placeholder="Ex: <%= format_date Date.today %>" data-guard="required dateUS" value="<%= format_date @conference.ending_at %>" />
+              <input type="text" class="form-control" id="end_date" name="end_date" placeholder="Ex: <%= format_date Date.today %>" data-guard="required dateUS conferencedate" value="<%= format_date @conference.ending_at %>" data-conferencedate-year="input[name='year']" data-conferencedate-greater-than="input[name='start_date'],input[name='allow_start_date']" data-conferencedate-less-than="input[name='allow_end_date']" data-conferencedate-label="conference end date" />
             </div>
           </div>
         </div>
@@ -42,14 +42,14 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="allow_start_date">Allowed Start Date</label> <small class="text-muted">(required)</small>
-              <input type="text" class="form-control" id="allow_start_date" name="allow_start_date" placeholder="Ex: <%= format_date Date.today %>" data-guard="required dateUS" value="<%= format_date @conference.allow_starting_at %>" />
+              <input type="text" class="form-control" id="allow_start_date" name="allow_start_date" placeholder="Ex: <%= format_date Date.today %>" data-guard="required dateUS conferencedate" value="<%= format_date @conference.allow_starting_at %>" data-conferencedate-year="input[name='year']" data-conferencedate-less-than="input[name='start_date'],input[name='end_date'],input[name='allow_end_date']" data-conferencedate-label="allowed start date" />
             </div>
           </div>
 
           <div class="col-sm-6">
             <div class="form-group">
               <label for="allow_end_date">Allowed End Date</label> <small class="text-muted">(required)</small>
-              <input type="text" class="form-control" id="allow_end_date" name="allow_end_date" placeholder="Ex: <%= format_date Date.today %>" data-guard="required dateUS" value="<%= format_date @conference.allow_ending_at %>" />
+              <input type="text" class="form-control" id="allow_end_date" name="allow_end_date" placeholder="Ex: <%= format_date Date.today %>" data-guard="required dateUS conferencedate" value="<%= format_date @conference.allow_ending_at %>" data-conferencedate-year="input[name='year']" data-conferencedate-greater-than="input[name='start_date'],input[name='end_date'],input[name='allow_start_date']" data-conferencedate-label="allowed end date" />
             </div>
           </div>
         </div>
