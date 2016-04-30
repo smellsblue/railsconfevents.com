@@ -10,7 +10,7 @@
 
   <tbody>
     <% Conference.for_admin.each do |conference| %>
-      <tr>
+      <tr class="<%= "text-bold" if conference == current_conference %>">
         <td><%= format_date conference.starting_at %></td>
         <td><%= format_date conference.ending_at %></td>
         <td><%= conference.timezone %></td>
