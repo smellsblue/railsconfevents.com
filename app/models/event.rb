@@ -111,6 +111,11 @@ class Event < ActiveRecord::Base
     end
   end
 
+  def signups_enabled?
+    # TODO
+    false
+  end
+
   private
 
   def date_within_conference_allowed_dates

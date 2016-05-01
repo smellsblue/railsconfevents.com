@@ -35,7 +35,7 @@
       <div class="col-sm-8">
         <div class="checkbox">
           <label>
-            <input type="checkbox" name="incognito" value="true" <%= %{checked="true"} if active_user.incognito_admin? %> />
+            <input type="checkbox" name="incognito" value="true" <%= "checked" if active_user.incognito_admin? %> />
             Incognito mode
           </label>
         </div>
