@@ -59,23 +59,40 @@
       </div>
     <% end %>
 
-    <%= partial "shared/panel", id: "signups", expanded: true, title: "Signups" do %>
-      <p>
-        <em>Signups will allow users to confirm that they want to go
-        to this event. You can also provide some questions before the
-        user confirms.</em>
-      </p>
+    <% if active_user.can_specify_signups? %>
+      <%= partial "shared/panel", id: "signups", expanded: true, title: "Signups" do %>
+        <p>
+          <em>Signups will allow users to confirm that they want to go
+          to this event. You can also provide some questions before the
+          user confirms.</em>
+        </p>
 
-      <div class="checkbox">
-        <label>
-          <input type="checkbox" name="signups_enabled" value="true" <%= "checked" if event.signups_enabled? %> />
-          Enable signups
-        </label>
-      </div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" name="signups_enabled" value="true" <%= "checked" if event.signups_enabled? %> />
+            Enable signups
+          </label>
+        </div>
 
-      <div id="signups-content" class="collapse <%= "in" if event.signups_enabled? %>">
-        <h4>Questions</h4>
-      </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div id="signups-content" class="collapse <%= "in" if event.signups_enabled? %>">
+              <h4>Questions</h4>
+
+              <div id="signups-questions-container">
+              </div>
+
+              <hr />
+
+              <button id="add-signups-question" class="btn btn-default">Add Question</button>
+
+              <script type="text/x-tmpl" id="new-signups-question-template">
+                <%= render SignupsQuestion.new, index: "{%= o.rowSize %}" %>
+              </script>
+            </div>
+          </div>
+        </div>
+      <% end %>
     <% end %>
 
     <input type="submit" class="btn btn-default" value="<%= submit_label %>" />

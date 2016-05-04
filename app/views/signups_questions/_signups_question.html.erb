@@ -1,0 +1,66 @@
+<hr />
+
+<div class="row row-signups-question">
+  <div class="col-sm-4 col-md-3">
+    <div class="form-group">
+      <% if signups_question.new_record? %>
+        <label for="signups-question-style-<%= index %>">Style</label>
+        <select class="form-control signups_question_style" id="signups-question-style-<%= index %>" name="signups_question_style[]" data-index="<%= index %>">
+          <% SignupsQuestion::Style.each do |style| %>
+            <option value="<%= style.value %>" <%= "selected" if signups_question.style == style.value %>><%= style.label %></option>
+          <% end %>
+        </select>
+      <% else %>
+        <label for="signups-question-style-<%= index %>">Style</label>
+        <span id="signups-question-style-<%= index %>"><%= style.label %></span>
+        <input type="hidden" name="signups_question_style[]" value="<%= style.value %>" />
+      <% end %>
+    </div>
+  </div>
+
+  <div class="col-sm-8 col-md-9">
+    <div class="form-group">
+      <label for="signups-question-description-<%= index %>">Description</label>
+      <input type="text" class="form-control" id="signups-question-description-<%= index %>" name="signups_question_description[]" placeholder="Ex: Do you need a ride?" value="<%= signups_question.description %>" />
+    </div>
+  </div>
+
+  <div class="signups-question-content-<%= index %>" data-signups-question-style="<%= SignupsQuestion::Style::CHECKBOX.value %>" style="<%= "display: none;" unless signups_question.style == SignupsQuestion::Style::CHECKBOX.value %>">
+    <div class="col-xs-12">
+      <div class="form-group">
+        <label for="signups-question-checkbox-default-<%= index %>">Default State</label>
+        <select class="form-control" id="signups-question-checkbox-default-<%= index %>" name="signups_question_checkbox_default[]">
+          <option value="unchecked" <%= "selected" unless signups_question.question_options.checked? %>>Unchecked</option>
+          <option value="checked" <%= "selected" if signups_question.question_options.checked? %>>Checked</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="signups-question-content-<%= index %>" data-signups-question-style="<%= SignupsQuestion::Style::DROPDOWN.value %>" style="<%= "display: none;" unless signups_question.style == SignupsQuestion::Style::DROPDOWN.value %>">
+    <div id="signups-question-content-dropdown-options-<%= index %>">
+      <% signups_question.question_options.dropdown_options.each do |option| %>
+        <div class="col-xs-12">
+          <div class="form-group">
+            <input type="text" class="form-control" name="signups_question_dropdown_option[<%= index %>][]" placeholder="Enter a dropdown option." value="<%= option %>" />
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-xs-12">
+      <div class="form-group">
+        <button class="btn btn-default add-signups-question-dropdown-option" data-target="#signups-question-content-dropdown-options-<%= index %>" data-index="<%= index %>">Add Dropdown Option</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="signups-question-content-<%= index %>" data-signups-question-style="<%= SignupsQuestion::Style::TEXT.value %>" style="<%= "display: none;" unless signups_question.style == SignupsQuestion::Style::TEXT.value %>">
+    <div class="col-xs-12">
+      <div class="form-group">
+        <label for="signups-question-text-placeholder-<%= index %>">Placeholder Hint</label>
+        <input type="text" class="form-control" id="signups-question-text-placeholder-<%= index %>" name="signups_question_text_placeholder[]" placeholder="Enter a placeholder for the text field." value="<%= signups_question.question_options.placeholder %>" />
+      </div>
+    </div>
+  </div>
+</div>

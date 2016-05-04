@@ -17,6 +17,10 @@ module EventCreator
     true
   end
 
+  def can_specify_signups?
+    true
+  end
+
   def comment_on_event!(params)
     event = Event.find params[:event_id]
 
@@ -78,6 +82,10 @@ module EventCreator
     end
 
     def can_specify_user_coordinators?
+      false
+    end
+
+    def can_specify_signups?
       false
     end
 
