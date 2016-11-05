@@ -40,7 +40,7 @@
 
             <ul class="nav navbar-nav navbar-right">
               <% if active_user.anonymous? %>
-                <li><a href="<%= user_singup_and_login_path %>"><em>Sign in / Register</em></a></li>
+                <li><a href="<%= user_signup_and_login_path %>"><em>Sign in / Register</em></a></li>
               <% else %>
                 <li <%= %{class="active"}.html_safe if me_active? %>>
                   <a href="/users/me">

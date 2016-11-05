@@ -45,11 +45,11 @@ module ApplicationHelper
     render partial: name, locals: locals
   end
 
-  def user_singup_and_login_path
+  def user_signup_and_login_path
     if Rails.env.production?
-      user_omniauth_authorize_path :github
+      user_github_omniauth_authorize_path
     else
-      user_omniauth_authorize_path :developer
+      user_developer_omniauth_authorize_path
     end
   end
 
